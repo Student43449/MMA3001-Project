@@ -14,7 +14,7 @@ def plot_golf_data_scatter(data_df):
 
     # Ensure the columns are numeric for plotting
     numeric_cols = [
-        'Club Speed', 'Total', 'Face Angle', 'Carry Flat - Land. Angle',
+        'Club Speed', 'Total', 'Face Angle', 'Side Total',
         'Smash Factor', 'Face To Path'
     ]
     for col in numeric_cols:
@@ -33,12 +33,12 @@ def plot_golf_data_scatter(data_df):
     plt.grid(True, linestyle='--', alpha=0.7)
     plt.show()
 
-    # Plot 2: Face Angle vs Carry Flat - Land. Angle
+    # Plot 2: Face Angle vs Side Total
     plt.figure(figsize=(10, 6))
-    sns.scatterplot(x='Face Angle', y='Carry Flat - Land. Angle', data=df_plot_func)
-    plt.title('Face Angle vs. Carry Flat - Land. Angle')
+    sns.scatterplot(x='Face Angle', y='Side Total', data=df_plot_func)
+    plt.title('Face Angle vs. Side Total')
     plt.xlabel('Face Angle (deg)')
-    plt.ylabel('Carry Flat - Land. Angle')
+    plt.ylabel('Side Total (yds)')
     plt.grid(True, linestyle='--', alpha=0.7)
     plt.show()
 
@@ -51,11 +51,11 @@ def plot_golf_data_scatter(data_df):
     plt.grid(True, linestyle='--', alpha=0.7)
     plt.show()
 
-    # Plot 4: Face To Path vs Carry Flat - Land. Angle
+    # Plot 4: Face To Path vs Side Total
     plt.figure(figsize=(10, 6))
-    sns.scatterplot(x='Face To Path', y='Carry Flat - Land. Angle', data=df_plot_func)
-    plt.title('Face To Path vs. Carry Flat - Land. Angle')
+    sns.scatterplot(x='Face To Path', y='Side Total', data=df_plot_func)
+    plt.title('Face To Path vs. Side Total')
     plt.xlabel('Face To Path (deg)')
-    plt.ylabel('Carry Flat - Land. Angle')
+    plt.ylabel('Side Total (yds)')
     plt.grid(True, linestyle='--', alpha=0.7)
     plt.show()
