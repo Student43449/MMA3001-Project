@@ -14,13 +14,13 @@ class GolfNeuralNet(nn.Module):
     def __init__(self, input_dim):
         super(GolfNeuralNet, self).__init__()
         self.network = nn.Sequential(
-            nn.Linear(input_dim, 2000),
+            nn.Linear(input_dim, 500),
             nn.ReLU(),
-            nn.Linear(2000, 2000),
+            nn.Linear(500, 500),
             nn.ReLU(),
-            nn.Linear(2000, 2000),
+            nn.Linear(500, 500),
             nn.ReLU(),
-            nn.Linear(2000, 2)  # Two outputs: [Side Total, Total]
+            nn.Linear(500, 2)  # Two outputs: [Side Total, Total]
        )
 
     def forward(self, x):
@@ -31,13 +31,11 @@ def prompt_multiple_files(dataset_type):
     print(f"\n--- Configure {dataset_type} Datasets ---")
     while True:
         while True:
-            path = input(f"Enter path to {dataset_type} dataset: ").strip()
             if os.path.exists(path):
                 file_paths.append(path)
                 break
             print(f"Error: File '{path}' does not exist. Please try again.\n")
 
-        another = input("Is there another file? (YES, NO): ").strip().upper()
         if another != 'YES':
             break
     return file_paths
@@ -73,8 +71,14 @@ def load_and_combine_data(file_paths, feature_start=3, feature_end=18, targets=[
     return X, y
 
 if __name__ == '__main__':
-    train_files = prompt_multiple_files("Training")
-    val_files = prompt_multiple_files("Validation")
+    train_files = [
+        '/content/MMA3001-Project/data files/divided_data_1.csv',
+        '/content/MMA3001-Project/data files/divided_data_2.csv'
+    ]
+    val_files = [
+        '/content/MMA3001-Project/data files/divided_data_3.csv',
+        '/content/MMA3001-Project/data files/divided_data_4.csv'
+    ]
 
     targets = ['Side Total', 'Total']
     X_train, y_train = load_and_combine_data(train_files, targets=targets)
