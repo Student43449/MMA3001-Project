@@ -14,11 +14,11 @@ class GolfNeuralNet(nn.Module):
     def __init__(self, input_dim):
         super(GolfNeuralNet, self).__init__()
         self.network = nn.Sequential(
-            nn.Linear(input_dim, 64),
+            nn.Linear(input_dim, 100),
             nn.ReLU(),
-            nn.Linear(64, 32),
+            nn.Linear(100, 100),
             nn.ReLU(),
-            nn.Linear(32, 1)  # One output node: Side Total
+            nn.Linear(100, 1)  # One output node: Side Total
         )
 
     def forward(self, x):
@@ -70,8 +70,14 @@ def load_and_combine_data(file_paths, feature_start=3, feature_end=18, target_co
     return X, y
 
 if __name__ == '__main__':
-    train_files = prompt_multiple_files("Training")
-    val_files = prompt_multiple_files("Validation")
+    train_files = [
+        '/content/MMA3001-Project/data files/divided_data_1.csv',
+        '/content/MMA3001-Project/data files/divided_data_2.csv'
+    ]
+    val_files = [
+        '/content/MMA3001-Project/data files/divided_data_3.csv',
+        '/content/MMA3001-Project/data files/divided_data_4.csv'
+    ]
 
     target = 'Side Total'
     X_train, y_train = load_and_combine_data(train_files, target_col=target)
