@@ -34,3 +34,17 @@ df.to_csv(output_file, index=False)
 print(f"Cleaned data saved to: {output_file}")
 print(f"Final number of rows: {len(df)}")
 print(f"Final number of columns: {len(df.columns)}")
+
+
+# 6. Divide the cleaned dataset into four approximately equal, shuffled datasets.
+# A fixed random seed makes the split reproducible whenever this script is run.
+# The four files together contain every cleaned row exactly once.
+import numpy as np
+
+shuffled_df = df.sample(frac=1, random_state=42).reset_index(drop=True)
+data_parts = np.array_split(shuffled_df, 4)
+
+for i, part in enumerate(data_parts, start=1):
+    divided_file = data_folder / f"divided_data_{i}.csv"
+    part.to_csv(divided_file, index=False)
+    print(f"Divided data saved to: {divided_file} ({len(part)} rows)")
