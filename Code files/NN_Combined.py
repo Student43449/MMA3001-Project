@@ -26,11 +26,9 @@ class GolfNeuralNet(nn.Module):
         return self.network(x)
 
 def train_and_evaluate(train_path, val_path):
-    # Load datasets directly
     train_df = pd.read_csv(train_path)
     val_df = pd.read_csv(val_path)
 
-    # Drop 'Club' if it is non-numeric string, handle features/targets
     features = [c for c in train_df.columns if c not in ['Club', 'Side Total', 'Total']]
     targets = ['Side Total', 'Total']
 
@@ -54,6 +52,9 @@ def train_and_evaluate(train_path, val_path):
 
     print("Training Multi-Output Neural Network Model...")
     epochs = 150
+    train_losses = []
+    val_losses = []
+
     for epoch in range(1, epochs + 1):
         model.train()
         optimizer.zero_grad()
@@ -61,18 +62,82 @@ def train_and_evaluate(train_path, val_path):
         loss = criterion(outputs, y_train_t)
         loss.backward()
         optimizer.step()
+        
+        train_losses.append(loss.item())
+        
+        model.eval()
+        with torch.no_grad():
+            val_outputs = model(X_val_t)
+            val_loss = criterion(val_outputs, y_val_t)
+            val_losses.append(val_loss.item())
 
         if epoch % 25 == 0 or epoch == 1:
-            model.eval()
-            with torch.no_grad():
-                val_outputs = model(X_val_t)
-                val_loss = criterion(val_outputs, y_val_t)
             print(f"Epoch {epoch:03d}/{epochs} | Train Loss (MSE): {loss.item():.4f} | Val Loss (MSE): {val_loss.item():.4f}")
 
     model.eval()
     with torch.no_grad():
         train_preds = model(X_train_t).numpy()
         val_preds = model(X_val_t).numpy()
+
+    # Generate output directories for plots
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    vis_dir = os.path.join(base_dir, 'Raw data visualization')
+    os.makedirs(vis_dir, exist_ok=True)
+
+    # Plot 1: Loss Convergence
+    plt.figure(figsize=(8, 5))
+    plt.plot(range(1, epochs + 1), train_losses, label='Train Loss', color='teal')
+    plt.plot(range(1, epochs + 1), val_losses, label='Val Loss', color='coral')
+    plt.title('Loss Convergence (Error vs Epoch Count)')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss (MSE)')
+    plt.grid(True)
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(os.path.join(vis_dir, 'loss_convergence.png'))
+    plt.close()
+
+    # Plot 2: Side Total Actual vs Predicted
+    plt.figure(figsize=(12, 5))
+    plt.subplot(1, 2, 1)
+    plt.scatter(y_train['Side Total'], train_preds[:, 0], color='green', alpha=0.5, label='Train')
+    plt.plot([y_train['Side Total'].min(), y_train['Side Total'].max()], [y_train['Side Total'].min(), y_train['Side Total'].max()], 'r--')
+    plt.title('Side Total: Actual vs Predicted (Train)')
+    plt.xlabel('Actual')
+    plt.ylabel('Predicted')
+    plt.legend()
+    
+    plt.subplot(1, 2, 2)
+    plt.scatter(y_val['Side Total'], val_preds[:, 0], color='blue', alpha=0.5, label='Val')
+    plt.plot([y_val['Side Total'].min(), y_val['Side Total'].max()], [y_val['Side Total'].min(), y_val['Side Total'].max()], 'r--')
+    plt.title('Side Total: Actual vs Predicted (Validation)')
+    plt.xlabel('Actual')
+    plt.ylabel('Predicted')
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(os.path.join(vis_dir, 'actual_vs_predicted_side_total.png'))
+    plt.close()
+
+    # Plot 3: Total Distance Actual vs Predicted
+    plt.figure(figsize=(12, 5))
+    plt.subplot(1, 2, 1)
+    plt.scatter(y_train['Total'], train_preds[:, 1], color='green', alpha=0.5, label='Train')
+    plt.plot([y_train['Total'].min(), y_train['Total'].max()], [y_train['Total'].min(), y_train['Total'].max()], 'r--')
+    plt.title('Total Distance: Actual vs Predicted (Train)')
+    plt.xlabel('Actual')
+    plt.ylabel('Predicted')
+    plt.legend()
+    
+    plt.subplot(1, 2, 2)
+    plt.scatter(y_val['Total'], val_preds[:, 1], color='blue', alpha=0.5, label='Val')
+    plt.plot([y_val['Total'].min(), y_val['Total'].max()], [y_val['Total'].min(), y_val['Total'].max()], 'r--')
+    plt.title('Total Distance: Actual vs Predicted (Validation)')
+    plt.xlabel('Actual')
+    plt.ylabel('Predicted')
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(os.path.join(vis_dir, 'actual_vs_predicted_total_distance.png'))
+    plt.close()
 
     for i, target in enumerate(targets):
         mae_tr = mean_absolute_error(y_train[target], train_preds[:, i])
