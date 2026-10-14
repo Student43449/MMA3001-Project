@@ -28,7 +28,7 @@ def train_and_evaluate(train_path, val_path):
     train_df = pd.read_csv(train_path)
     val_df = pd.read_csv(val_path)
     features = [
-        'Attack Angle', 'Club Path', 'Low Point', 'Swing Plane', 'Swing Direction',
+        'Club Speed', 'Attack Angle', 'Club Path', 'Low Point', 'Swing Plane', 'Swing Direction',
         'Dyn. Loft', 'Face Angle', 'Face To Path', 'Ball Speed', 'Smash Factor',
         'Launch Angle', 'Launch Direction', 'Spin Rate', 'Spin Axis'
     ]
@@ -66,7 +66,7 @@ def train_and_evaluate(train_path, val_path):
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     vis_dir = os.path.join(base_dir, 'Raw data visualization')
     os.makedirs(vis_dir, exist_ok=True)
-    
+
     # Generate Plots
     plt.figure(figsize=(8, 5))
     plt.plot(range(1, epochs + 1), train_losses, label='Train Loss', color='teal')
