@@ -27,12 +27,11 @@ class GolfNeuralNet(nn.Module):
 def train_and_evaluate(train_path, val_path):
     train_df = pd.read_csv(train_path)
     val_df = pd.read_csv(val_path)
-    features = [
-        'Club Speed', 'Attack Angle', 'Club Path', 'Low Point', 'Swing Plane', 'Swing Direction',
-        'Dyn. Loft', 'Face Angle', 'Face To Path', 'Ball Speed', 'Smash Factor',
-        'Launch Angle', 'Launch Direction', 'Spin Rate', 'Spin Axis'
-    ]
+    
+    # Dynamically select all features (including Club Speed, Ball Speed, etc.)
+    features = [c for c in train_df.columns if c not in ['Club', 'Side Total', 'Total']]
     targets = ['Side Total', 'Total']
+    
     X_train, y_train = train_df[features], train_df[targets]
     X_val, y_val = val_df[features], val_df[targets]
     scaler = StandardScaler()
