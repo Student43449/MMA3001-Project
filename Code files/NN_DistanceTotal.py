@@ -22,26 +22,24 @@ class DistanceNet(nn.Module):
 def train_and_evaluate(train_path, val_path):
     train_df = pd.read_csv(train_path)
     val_df = pd.read_csv(val_path)
-    features = [c for c in train_df.columns if c not in ['Club', 'Side Total', 'Total']]
-    
+    features = [
+        'Attack Angle', 'Club Path', 'Low Point', 'Swing Plane', 'Swing Direction',
+        'Dyn. Loft', 'Face Angle', 'Face To Path', 'Ball Speed', 'Smash Factor',
+        'Launch Angle', 'Launch Direction', 'Spin Rate', 'Spin Axis'
+    ]
     X_train = train_df[features]
     y_train = train_df[['Total']]
     X_val = val_df[features]
     y_val = val_df[['Total']]
-    
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     X_val_scaled = scaler.transform(X_val)
-    
     model = DistanceNet(X_train_scaled.shape[1])
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
-    
     X_tr_t = torch.FloatTensor(X_train_scaled)
     y_tr_t = torch.FloatTensor(y_train.values)
     X_va_t = torch.FloatTensor(X_val_scaled)
-    y_va_t = torch.FloatTensor(y_val.values)
-    
     print("Training Distance Total Neural Network Model...")
     for epoch in range(1, 101):
         model.train()
@@ -49,7 +47,6 @@ def train_and_evaluate(train_path, val_path):
         loss = criterion(model(X_tr_t), y_tr_t)
         loss.backward()
         optimizer.step()
-        
     model.eval()
     with torch.no_grad():
         preds = model(X_va_t).numpy()
