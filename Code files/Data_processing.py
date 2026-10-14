@@ -1,8 +1,9 @@
 import pandas as pd
 import numpy as np
 import os
+import glob
 
-def process_data(raw_path, output_path):
+def process_data(raw_path, train_output, val_output):
     # Load raw, skipping the first row (the units row)
     raw_df = pd.read_csv(raw_path)
     cleaned_attempt = raw_df.drop(index=0)
@@ -29,13 +30,30 @@ def process_data(raw_path, output_path):
     # Drop rows with NaN values
     cleaned_attempt = cleaned_attempt.dropna().reset_index(drop=True)
     
-    # Save result
-    cleaned_attempt.to_csv(output_path, index=False)
-    print(f"Processed data saved to {output_path} with shape {cleaned_attempt.shape}")
+    # Shuffle and split into two equal-sized datasets
+    shuffled_df = cleaned_attempt.sample(frac=1, random_state=42).reset_index(drop=True)
+    half_size = len(shuffled_df) // 2
+    
+    train_df = shuffled_df.iloc[:half_size]
+    val_df = shuffled_df.iloc[half_size:]
+    
+    train_df.to_csv(train_output, index=False)
+    val_df.to_csv(val_output, index=False)
+    print(f"Created {train_output} with {len(train_df)} rows.")
+    print(f"Created {val_output} with {len(val_df)} rows.")
+
+    # Remove obsolete divided_data_*.csv files
+    data_dir = os.path.dirname(raw_path)
+    for path in glob.glob(os.path.join(data_dir, 'divided_data_*.csv')):
+        try:
+            os.remove(path)
+            print(f"Removed obsolete file: {path}")
+        except Exception as e:
+            print(f"Error removing {path}: {e}")
 
 if __name__ == '__main__':
-    # Default paths within the repo structure
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     raw_path = os.path.join(base_dir, 'data files', 'data.csv')
-    output_path = os.path.join(base_dir, 'data files', 'cleaned_data_recreated.csv')
-    process_data(raw_path, output_path)
+    train_output = os.path.join(base_dir, 'data files', 'Training_data.csv')
+    val_output = os.path.join(base_dir, 'data files', 'Validation_data.csv')
+    process_data(raw_path, train_output, val_output)
