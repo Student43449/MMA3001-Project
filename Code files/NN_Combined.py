@@ -29,7 +29,12 @@ def train_and_evaluate(train_path, val_path):
     train_df = pd.read_csv(train_path)
     val_df = pd.read_csv(val_path)
 
-    features = [c for c in train_df.columns if c not in ['Club', 'Side Total', 'Total']]
+    # Replicating original feature selection by column names corresponding to indices 3:18 of raw data
+    features = [
+        'Attack Angle', 'Club Path', 'Low Point', 'Swing Plane', 'Swing Direction',
+        'Dyn. Loft', 'Face Angle', 'Face To Path', 'Ball Speed', 'Smash Factor',
+        'Launch Angle', 'Launch Direction', 'Spin Rate', 'Spin Axis'
+    ]
     targets = ['Side Total', 'Total']
 
     X_train = train_df[features]
@@ -79,7 +84,6 @@ def train_and_evaluate(train_path, val_path):
         train_preds = model(X_train_t).numpy()
         val_preds = model(X_val_t).numpy()
 
-    # Generate output directories for plots
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     vis_dir = os.path.join(base_dir, 'Raw data visualization')
     os.makedirs(vis_dir, exist_ok=True)
