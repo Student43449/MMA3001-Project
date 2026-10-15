@@ -8,173 +8,118 @@ import torch.nn as nn
 import torch.optim as optim
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_absolute_error, r2_score
+from pathlib import Path
 
 # Define the Multi-Output Neural Network Architecture (predicts 2 target variables)
 class GolfNeuralNet(nn.Module):
     def __init__(self, input_dim):
         super(GolfNeuralNet, self).__init__()
-        self.network = nn.Sequential(
-            nn.Linear(input_dim, 500),
-            nn.ReLU(),
-            nn.Linear(500, 500),
-            nn.ReLU(),
-            nn.Linear(500, 500),
-            nn.ReLU(),
-            nn.Linear(500, 2)  # Two outputs: [Side Total, Total]
-       )
+        self.fc1 = nn.Linear(input_dim, 500)
+        self.relu1 = nn.ReLU()
+        self.fc2 = nn.Linear(500, 500)
+        self.relu2 = nn.ReLU()
+        self.fc3 = nn.Linear(500, 2)  # Output layer predicting 2 values (Side Total, Total)
 
     def forward(self, x):
-        return self.network(x)
+        out = self.fc1(x)
+        out = self.relu1(out)
+        out = self.fc2(out)
+        out = self.relu2(out)
+        out = self.fc3(out)
+        return out
 
-def prompt_multiple_files(dataset_type):
-    file_paths = []
-    print(f"\n--- Configure {dataset_type} Datasets ---")
-    while True:
-        while True:
-            if os.path.exists(path):
-                file_paths.append(path)
-                break
-            print(f"Error: File '{path}' does not exist. Please try again.\n")
+# Load Training and Validation datasets directly
+train_df = pd.read_csv('/content/MMA3001-Project/data files/Training data.csv')
+val_df = pd.read_csv('/content/MMA3001-Project/data files/Validation data.csv')
 
-        if another != 'YES':
-            break
-    return file_paths
+# Split into features (X) and targets (y) using available, verified columns
+features = [
+    'Club Speed', 'Attack Angle', 'Club Path', 'Low Point', 'Swing Plane',
+    'Swing Direction', 'Dyn. Loft', 'Face Angle', 'Face To Path', 'Ball Speed',
+    'Smash Factor', 'Launch Angle', 'Launch Direction', 'Spin Rate', 'Spin Axis'
+]
+targets = ['Side Total', 'Total']
 
-def load_and_combine_data(file_paths, feature_start=3, feature_end=18, targets=['Side Total', 'Total']):
-    dfs = []
-    for path in file_paths:
-        try:
-            df = pd.read_csv(path)
-            for target in targets:
-                if target not in df.columns:
-                    print(f"Check dataset: {target} not found")
-                    sys.exit(1)
-            dfs.append(df)
-        except Exception:
-            print("Check dataset")
-            sys.exit(1)
+X_train = train_df[features]
+y_train = train_df[targets]
+X_val = val_df[features]
+y_val = val_df[targets]
 
-    combined_df = pd.concat(dfs, ignore_index=True)
-    feature_cols = combined_df.columns[feature_start:feature_end]
+# Normalize features
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_val_scaled = scaler.transform(X_val)
 
-    X = combined_df[feature_cols].apply(pd.to_numeric, errors='coerce')
-    y = combined_df[targets].apply(pd.to_numeric, errors='coerce')
+# Convert to PyTorch Tensors
+X_train_tensor = torch.tensor(X_train_scaled, dtype=torch.float32)
+y_train_tensor = torch.tensor(y_train.values, dtype=torch.float32)
+X_val_tensor = torch.tensor(X_val_scaled, dtype=torch.float32)
+y_val_tensor = torch.tensor(y_val.values, dtype=torch.float32)
 
-    aligned = pd.concat([X, y], axis=1).dropna()
-    X = aligned[feature_cols]
-    y = aligned[targets]
+# Instantiate Model, Loss Function, and Optimizer
+model = GolfNeuralNet(len(features))
+criterion = nn.MSELoss()
+optimizer = optim.Adam(model.parameters(), lr=0.01)
 
-    if len(X) == 0:
-        print("Check dataset: Empty after alignment")
-        sys.exit(1)
+# Train the Model
+print("\nTraining Multi-Output Neural Network Model...")
+epochs = 150
+train_losses = []
+val_losses = []
 
-    return X, y
+for epoch in range(1, epochs + 1):
+    model.train()
+    optimizer.zero_grad()
+    outputs = model(X_train_tensor)
+    loss = criterion(outputs, y_train_tensor)
+    loss.backward()
+    optimizer.step()
 
-if __name__ == '__main__':
-    train_files = [
-        '/content/MMA3001-Project/data files/divided_data_1.csv',
-        '/content/MMA3001-Project/data files/divided_data_2.csv'
-    ]
-    val_files = [
-        '/content/MMA3001-Project/data files/divided_data_3.csv',
-        '/content/MMA3001-Project/data files/divided_data_4.csv'
-    ]
-
-    targets = ['Side Total', 'Total']
-    X_train, y_train = load_and_combine_data(train_files, targets=targets)
-    X_val, y_val = load_and_combine_data(val_files, targets=targets)
-
-    scaler = StandardScaler()
-    X_train_scaled = scaler.fit_transform(X_train)
-    X_val_scaled = scaler.transform(X_val)
-
-    X_train_t = torch.FloatTensor(X_train_scaled)
-    y_train_t = torch.FloatTensor(y_train.values)
-    X_val_t = torch.FloatTensor(X_val_scaled)
-    y_val_t = torch.FloatTensor(y_val.values)
-
-    model = GolfNeuralNet(X_train_scaled.shape[1])
-    criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.01)
-
-    epochs = 150
-    train_losses = []
-    val_losses = []
-
-    print("\nTraining Multi-Output Neural Network Model...")
-    for epoch in range(1, epochs + 1):
-        model.train()
-        optimizer.zero_grad()
-
-        predictions = model(X_train_t)
-        loss = criterion(predictions, y_train_t)
-        loss.backward()
-        optimizer.step()
-
-        model.eval()
-        with torch.no_grad():
-            val_preds = model(X_val_t)
-            val_loss = criterion(val_preds, y_val_t)
-
-        train_losses.append(loss.item())
-        val_losses.append(val_loss.item())
-
-        if epoch % 25 == 0 or epoch == 1:
-            print(f"Epoch {epoch:03d}/{epochs} | Train Loss (MSE): {loss.item():.4f} | Val Loss (MSE): {val_loss.item():.4f}")
-
+    # Evaluate on Validation set
     model.eval()
     with torch.no_grad():
-        train_preds_np = model(X_train_t).numpy()
-        val_preds_np = model(X_val_t).numpy()
+        val_outputs = model(X_val_tensor)
+        val_loss = criterion(val_outputs, y_val_tensor)
 
-    # Plot 1: Combined Loss Convergence over Epochs
-    plt.figure(figsize=(8, 5))
-    plt.plot(range(1, epochs + 1), train_losses, label='Train Loss', color='teal')
-    plt.plot(range(1, epochs + 1), val_losses, label='Val Loss', color='coral')
-    plt.title('Multi-Output Loss Convergence (Error vs Epoch Count)')
-    plt.xlabel('Epochs')
-    plt.ylabel('Loss (MSE)')
-    plt.grid(True)
-    plt.legend()
+    train_losses.append(loss.item())
+    val_losses.append(val_loss.item())
+
+    if epoch == 1 or epoch % 25 == 0:
+        print(f"Epoch {epoch:03d}/{epochs} | Train Loss (MSE): {loss.item():.4f} | Val Loss (MSE): {val_loss.item():.4f}")
+
+# Model evaluation
+model.eval()
+with torch.no_grad():
+    train_preds_np = model(X_train_tensor).numpy()
+    val_preds_np = model(X_val_tensor).numpy()
+
+# Plot actual vs predicted values side-by-side
+for idx, target_name in enumerate(targets):
+    plt.figure(figsize=(12, 5))
+
+    # Train plot
+    plt.subplot(1, 2, 1)
+    tr_true = y_train.values[:, idx]
+    tr_pred = train_preds_np[:, idx]
+    mae_tr = mean_absolute_error(tr_true, tr_pred)
+    r2_tr = r2_score(tr_true, tr_pred)
+    plt.scatter(tr_true, tr_pred, alpha=0.3, color='blue')
+    plt.plot([tr_true.min(), tr_true.max()], [tr_true.min(), tr_true.max()], 'r--', lw=2)
+    plt.title(f'Train: Actual vs Pred ({target_name})\nMAE: {mae_tr:.2f}, R²: {r2_tr:.4f}')
+    plt.xlabel('Actual')
+    plt.ylabel('Predicted')
+
+    # Val plot
+    plt.subplot(1, 2, 2)
+    v_true = y_val.values[:, idx]
+    v_pred = val_preds_np[:, idx]
+    mae_val = mean_absolute_error(v_true, v_pred)
+    r2_val = r2_score(v_true, v_pred)
+    plt.scatter(v_true, v_pred, alpha=0.3, color='green')
+    plt.plot([v_true.min(), v_true.max()], [v_true.min(), v_true.max()], 'r--', lw=2)
+    plt.title(f'Val: Actual vs Pred ({target_name})\nMAE: {mae_val:.2f}, R²: {r2_val:.4f}')
+    plt.xlabel('Actual')
+    plt.ylabel('Predicted')
+
+    plt.tight_layout()
     plt.show()
-
-    # Generate tables and scatter plots for each output target
-    for idx, target_name in enumerate(targets):
-        tr_true = y_train.iloc[:, idx].values
-        tr_pred = train_preds_np[:, idx]
-        v_true = y_val.iloc[:, idx].values
-        v_pred = val_preds_np[:, idx]
-
-        mae_tr = mean_absolute_error(tr_true, tr_pred)
-        r2_tr = r2_score(tr_true, tr_pred)
-
-        mae_val = mean_absolute_error(v_true, v_pred)
-        r2_val = r2_score(v_true, v_pred)
-
-        print(f"\n=== Training Set: {target_name} Evaluation Error Table ===")
-        print(pd.DataFrame({'Metric': ['MAE', 'R² Score'], 'Value': [mae_tr, r2_tr]}).to_string(index=False))
-
-        print(f"\n=== Validation Set: {target_name} Evaluation Error Table ===")
-        print(pd.DataFrame({'Metric': ['MAE', 'R² Score'], 'Value': [mae_val, r2_val]}).to_string(index=False))
-
-        # Plot 2: Scatter plot (Train)
-        plt.figure(figsize=(8, 6))
-        plt.scatter(tr_true, tr_pred, color='green', alpha=0.5, edgecolors='k', label='Train (Combined)')
-        plt.plot([tr_true.min(), tr_true.max()], [tr_true.min(), tr_true.max()], 'r--', lw=2, label='Perfect Fit')
-        plt.title(f'{target_name}: Actual Vs Predicted Training')
-        plt.xlabel(f'Actual {target_name}')
-        plt.ylabel(f'Predicted {target_name}')
-        plt.grid(True)
-        plt.legend()
-        plt.show()
-
-        # Plot 3: Scatter plot (Val)
-        plt.figure(figsize=(8, 6))
-        plt.scatter(v_true, v_pred, color='blue', alpha=0.5, edgecolors='k', label='Val (Combined)')
-        plt.plot([v_true.min(), v_true.max()], [v_true.min(), v_true.max()], 'r--', lw=2, label='Perfect Fit')
-        plt.title(f'{target_name}: Actual Vs Predicted Validation')
-        plt.xlabel(f'Actual {target_name}')
-        plt.ylabel(f'Predicted {target_name}')
-        plt.grid(True)
-        plt.legend()
-        plt.show()

@@ -48,3 +48,18 @@ for i, part in enumerate(data_parts, start=1):
     divided_file = data_folder / f"divided_data_{i}.csv"
     part.to_csv(divided_file, index=False)
     print(f"Divided data saved to: {divided_file} ({len(part)} rows)")
+# 7. Divide the data into 2 equal parts: Training and Validation
+num_parts = 2
+chunk_size = len(shuffled_df) // num_parts
+
+# Part 1: Training Data
+train_part = shuffled_df.iloc[0:chunk_size]
+train_output_file = data_folder / "Training data.csv"
+train_part.to_csv(train_output_file, index=False)
+print(f"Divided data saved to: {train_output_file} ({len(train_part)} rows)")
+
+# Part 2: Validation Data
+val_part = shuffled_df.iloc[chunk_size:]
+val_output_file = data_folder / "Validation data.csv"
+val_part.to_csv(val_output_file, index=False)
+print(f"Divided data saved to: {val_output_file} ({len(val_part)} rows)")
