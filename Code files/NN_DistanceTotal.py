@@ -6,16 +6,22 @@ MAE and R² scores. It also plots loss convergence and actual-versus-predicted
 results.
 """
 
-import os
-import sys
+from pathlib import Path
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 import torch.optim as optim
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_absolute_error, r2_score
+
+# Explicit predictors shared with the combined neural network. Target columns are
+# deliberately excluded to prevent the model from seeing the answers it predicts.
+FEATURE_COLUMNS = [
+    "Club Speed", "Attack Angle", "Club Path", "Low Point", "Swing Plane",
+    "Swing Direction", "Dyn. Loft", "Face Angle", "Face To Path", "Ball Speed",
+    "Smash Factor", "Launch Angle", "Launch Direction", "Spin Rate", "Spin Axis",
+]
 
 # Single-output network: its final layer returns one prediction per golf shot.
 # Single-Output Neural Network (1 output node for Total Distance)
@@ -37,68 +43,60 @@ class GolfNeuralNet(nn.Module):
         """Return the predicted total distance for each input row."""
         return self.network(x)
 
-def prompt_multiple_files(dataset_type):
-    """Interactively collect existing CSV paths for one dataset split."""
-    file_paths = []
-    print(f"\n--- Configure {dataset_type} Datasets ---")
-    while True:
-        while True:
-            path = input(f"Enter path to {dataset_type} dataset: ").strip()
-            if os.path.exists(path):
-                file_paths.append(path)
-                break
-            print(f"Error: File '{path}' does not exist. Please try again.\n")
+def load_and_combine_data(file_paths, target_col='Total'):
+    """Load CSV files and return the named numeric predictors and target.
 
-        another = input("Is there another file? (YES, NO): ").strip().upper()
-        if another != 'YES':
-            break
-    return file_paths
+    Explicit feature names prevent CSV column-order changes from silently
+    changing the model inputs or accidentally including a target as a feature.
+    """
+    if not file_paths:
+        raise ValueError("At least one dataset file must be provided.")
 
-def load_and_combine_data(file_paths, feature_start=3, feature_end=18, target_col='Total'):
-    """Combine CSVs and return numeric feature and target data with incomplete rows removed."""
-    dfs = []
+    frames = []
     for path in file_paths:
         try:
-            df = pd.read_csv(path)
-            if target_col not in df.columns:
-                print(f"Check dataset: {target_col} not found")
-                sys.exit(1)
-            dfs.append(df)
-        except Exception:
-            print("Check dataset")
-            sys.exit(1)
+            frame = pd.read_csv(path)
+        except Exception as exc:
+            raise RuntimeError(f"Could not read dataset '{path}': {exc}") from exc
 
-    # Concatenate rows and reset the index so duplicate source indices do not matter.
-    combined_df = pd.concat(dfs, ignore_index=True)
-    feature_cols = combined_df.columns[feature_start:feature_end]
+        required_columns = FEATURE_COLUMNS + [target_col]
+        missing_columns = [column for column in required_columns if column not in frame.columns]
+        if missing_columns:
+            raise ValueError(
+                f"Dataset '{path}' is missing required columns: {missing_columns}"
+            )
+        frames.append(frame)
 
-    X = combined_df[feature_cols].apply(pd.to_numeric, errors='coerce')
-    y = combined_df[[target_col]].apply(pd.to_numeric, errors='coerce')
+    combined_df = pd.concat(frames, ignore_index=True)
+    X = combined_df[FEATURE_COLUMNS].apply(pd.to_numeric, errors="coerce")
+    y = pd.to_numeric(combined_df[target_col], errors="coerce")
 
-    # Drop a row if any selected feature or the target failed numeric conversion or is missing.
-    aligned = pd.concat([X, y], axis=1).dropna()
-    X = aligned[feature_cols]
-    y = aligned[target_col]
+    # Drop rows with missing or non-numeric values in any predictor or the target.
+    aligned = pd.concat([X, y.rename(target_col)], axis=1).dropna()
+    if aligned.empty:
+        raise ValueError(
+            f"No complete numeric rows remain when preparing target '{target_col}'."
+        )
 
-    if len(X) == 0:
-        print("Check dataset: Empty after alignment")
-        sys.exit(1)
-
-    return X, y
+    return aligned[FEATURE_COLUMNS], aligned[target_col]
 
 if __name__ == '__main__':
-    train_files = [
-        '/content/MMA3001-Project/data files/divided_data_1.csv',
-        '/content/MMA3001-Project/data files/divided_data_2.csv'
-    ]
-    val_files = [
-        '/content/MMA3001-Project/data files/divided_data_3.csv',
-        '/content/MMA3001-Project/data files/divided_data_4.csv'
-    ]
+    # Find the data folder relative to this script, not a machine-specific location.
+    repo_root = Path(__file__).resolve().parent.parent
+    data_folder = repo_root / "data files"
+    train_file = data_folder / "Training data.csv"
+    val_file = data_folder / "Validation data.csv"
+
+    for required_file in (train_file, val_file):
+        if not required_file.is_file():
+            raise FileNotFoundError(
+                f"Required dataset not found: {required_file}. "
+                "Run Data_processing.py first."
+            )
 
     target = 'Total'
-    X_train, y_train = load_and_combine_data(train_files, target_col=target)
-    X_val, y_val = load_and_combine_data(val_files, target_col=target)
+    X_train, y_train = load_and_combine_data([train_file], target_col=target)
+    X_val, y_val = load_and_combine_data([val_file], target_col=target)
 
     # Standardise each feature using training-set means and standard deviations only.
     scaler = StandardScaler()
