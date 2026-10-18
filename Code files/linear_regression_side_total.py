@@ -84,6 +84,8 @@ def run_side_total_regression_with_feature_selection(
         sys.exit(1)
 
     # Feature Selection for 'Side Total'
+    # Rank candidate features using their individual linear relationship with Side Total.
+    # Fit the selector on training data only to avoid using validation outcomes for selection.
     selector_side_total = SelectKBest(f_regression, k=k_features)
     selector_side_total.fit(X_train_fs, y_train_fs)
     selected_features_side_total_list = X_train_fs.columns[selector_side_total.get_support()].tolist()
@@ -94,10 +96,12 @@ def run_side_total_regression_with_feature_selection(
 
     # Train Linear Regression model for 'Side Total'
     model_side_total = LinearRegression()
+    # Fit the regression coefficients using only the selected training features.
     model_side_total.fit(X_train_side_total_selected, y_train_fs)
 
     # Make predictions on Training Data
     y_pred_train = model_side_total.predict(X_train_side_total_selected)
+    # MAE measures average absolute prediction error; R² measures explained variation.
     mae_train = mean_absolute_error(y_train_fs, y_pred_train)
     r2_train = r2_score(y_train_fs, y_pred_train)
 
@@ -159,6 +163,7 @@ if __name__ == "__main__":
     # Plot 1: Training Scatterplot with Legend
     plt.figure(figsize=(8, 6))
     plt.scatter(y_tr_true, y_tr_pred, color='green', alpha=0.6, edgecolors='k', label=f'Train: {os.path.basename(train_path)}')
+    # Points on this reference line have identical actual and predicted values.
     plt.plot([y_tr_true.min(), y_tr_true.max()], [y_tr_true.min(), y_tr_true.max()], 'r--', lw=2, label='Perfect Fit')
     plt.title('Side Total: Actual Vs Predicited Training')
     plt.xlabel('Actual Side Total')
