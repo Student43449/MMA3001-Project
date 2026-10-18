@@ -22,6 +22,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_absolute_error, r2_score
 from pathlib import Path
 
+# The network maps the 15 input measurements to two outputs: Side Total and Total.
 class GolfNeuralNet(nn.Module):
     """Fully connected network predicting Side Total and Total."""
 
@@ -32,6 +33,7 @@ class GolfNeuralNet(nn.Module):
             input_dim (int): Number of input features supplied to the network.
         """
         super(GolfNeuralNet, self).__init__()
+        # Hidden fully connected layers learn nonlinear combinations of input measurements.
         self.fc1 = nn.Linear(input_dim, 500)
         self.relu1 = nn.ReLU()
         self.fc2 = nn.Linear(500, 500)
@@ -92,6 +94,7 @@ X_val = val_df[features]
 y_val = val_df[targets]
 
 # Normalize features
+# Fit scaling parameters on training data only; reuse them unchanged for validation.
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_val_scaled = scaler.transform(X_val)
@@ -104,6 +107,7 @@ y_val_tensor = torch.tensor(y_val.values, dtype=torch.float32)
 
 # Instantiate Model, Loss Function, and Optimizer
 model = GolfNeuralNet(len(features))
+# MSE penalises squared differences between predicted and measured target values.
 criterion = nn.MSELoss()
 optimizer = optim.Adam(model.parameters(), lr=0.01)
 
@@ -113,14 +117,17 @@ epochs = 150
 train_losses = []
 val_losses = []
 
+# One epoch is a complete optimisation pass over the training dataset.
 for epoch in range(1, epochs + 1):
     model.train()
     optimizer.zero_grad()
     outputs = model(X_train_tensor)
     loss = criterion(outputs, y_train_tensor)
+    # Backpropagate the loss gradients, then update the model weights.
     loss.backward()
     optimizer.step()
 
+    # Validation data measures generalisation; it is not used for gradient updates.
     # Evaluate on Validation set
     model.eval()
     with torch.no_grad():
@@ -135,6 +142,7 @@ for epoch in range(1, epochs + 1):
 
 # Model evaluation
 model.eval()
+# Disable gradient tracking during final prediction to reduce overhead.
 with torch.no_grad():
     train_preds_np = model(X_train_tensor).numpy()
     val_preds_np = model(X_val_tensor).numpy()
@@ -143,6 +151,7 @@ with torch.no_grad():
 for idx, target_name in enumerate(targets):
     plt.figure(figsize=(12, 5))
 
+    # Compare predictions with known targets; the dashed diagonal indicates perfect predictions.
     # Train plot
     plt.subplot(1, 2, 1)
     tr_true = y_train.values[:, idx]
