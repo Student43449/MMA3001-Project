@@ -1,3 +1,12 @@
+"""Establish a linear-regression baseline for predicting golf-shot Side Total.
+
+The script selects a configurable number of input features using SelectKBest
+with f_regression, fits a linear regression model, reports MAE and R-squared
+for training and validation data, and plots actual versus predicted values.
+It expects the training and validation CSV files in the repository's data
+files directory; run Data_processing.py first.
+"""
+
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
@@ -7,19 +16,33 @@ import os
 import sys
 from pathlib import Path
 
-def run_side_total_regression_with_feature_selection(df_train_path, df_test_path, feature_column_indices_start, feature_column_indices_end, k_features=5):
-    """
-    Performs Linear Regression to predict 'Side Total' with feature selection.
+def run_side_total_regression_with_feature_selection(
+    df_train_path,
+    df_test_path,
+    feature_column_indices_start,
+    feature_column_indices_end,
+    k_features=5,
+):
+    """Fit and evaluate a feature-selected linear regression model for Side Total.
 
     Args:
-        df_train_path (str): Path to the training data CSV file.
-        df_test_path (str): Path to the testing data CSV file.
-        feature_column_indices_start (int): The 0-indexed start column for features.
-        feature_column_indices_end (int): The 0-indexed end column (exclusive) for features.
-        k_features (int): Number of top features to select for 'Side Total'.
+        df_train_path (str or pathlib.Path): Path to the training CSV file.
+        df_test_path (str or pathlib.Path): Path to the validation/test CSV file.
+        feature_column_indices_start (int): Inclusive, zero-based start index of
+            the candidate feature columns.
+        feature_column_indices_end (int): Exclusive, zero-based end index of
+            the candidate feature columns.
+        k_features (int): Number of candidate features to retain, ranked using
+            univariate linear-regression tests.
 
     Returns:
-        tuple: evaluation metrics, actual/predicted values for both training and validation sets, and selected features.
+        tuple: Training MAE and R-squared, training actual and predicted values,
+        validation MAE and R-squared, validation actual and predicted values,
+        and the list of selected feature names.
+
+    Raises:
+        SystemExit: If the input data cannot be loaded, required target columns
+            are missing, or no usable rows remain after numeric conversion.
     """
     try:
         # Load the training and testing data
