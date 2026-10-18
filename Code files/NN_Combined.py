@@ -28,9 +28,28 @@ class GolfNeuralNet(nn.Module):
         out = self.fc3(out)
         return out
 
-# Load Training and Validation datasets directly
-train_df = pd.read_csv('/content/MMA3001-Project/data files/Training data.csv')
-val_df = pd.read_csv('/content/MMA3001-Project/data files/Validation data.csv')
+# Resolve data paths relative to this script so the current working directory
+# and absolute repository location do not need to be hard-coded.
+REPO_ROOT = Path(__file__).resolve().parent.parent
+DATA_FOLDER = REPO_ROOT / "data files"
+
+# Load the Training and Validation datasets.
+train_file = DATA_FOLDER / "Training data.csv"
+val_file = DATA_FOLDER / "Validation data.csv"
+
+if not train_file.is_file():
+    raise FileNotFoundError(
+        f"Training dataset not found: {train_file}. "
+        "Run Data_processing.py first."
+    )
+if not val_file.is_file():
+    raise FileNotFoundError(
+        f"Validation dataset not found: {val_file}. "
+        "Run Data_processing.py first."
+    )
+
+train_df = pd.read_csv(train_file)
+val_df = pd.read_csv(val_file)
 
 # Split into features (X) and targets (y) using available, verified columns
 features = [
