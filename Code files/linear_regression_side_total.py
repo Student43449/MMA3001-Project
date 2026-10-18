@@ -177,7 +177,12 @@ if __name__ == "__main__":
     plt.ylabel('Predicted Side Total')
     plt.grid(True)
     plt.legend()
-    plt.show()
+    output_dir = repo_root / "model outputs"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    figure_path = output_dir / "linear_regression_training.png"
+    plt.savefig(figure_path, dpi=150, bbox_inches="tight")
+    print(f"Saved graph: {figure_path}")
+    plt.close()
 
     # Plot 2: Validation Scatterplot with Legend
     plt.figure(figsize=(8, 6))
@@ -188,4 +193,7 @@ if __name__ == "__main__":
     plt.ylabel('Predicted Side Total')
     plt.grid(True)
     plt.legend()
-    plt.show()
+    figure_path = output_dir / "linear_regression_validation.png"
+    plt.savefig(figure_path, dpi=150, bbox_inches="tight")
+    print(f"Saved graph: {figure_path}")
+    plt.close()
