@@ -13,7 +13,7 @@ The project establishes a linear regression baseline and then trains a multi-out
 
 ## Repository Structure
 
-- `data files/` — The original TrackMan dataset, cleaned data, and generated training, validation, and divided datasets.
+- `data files/` — The original TrackMan dataset, cleaned data, and generated training and validation datasets.
 - `Code files/` — The Python scripts for data preparation, baseline regression, and neural-network modelling.
 
 ## Required Execution Order
@@ -30,7 +30,6 @@ This script prepares the original dataset for modelling. It:
 - Retains shots recorded with the Driver.
 - Removes rows containing missing values.
 - Saves the cleaned dataset as `data files/cleaned_data.csv`.
-- Generates four shuffled, approximately equal-sized datasets: `divided_data_1.csv` through `divided_data_4.csv`.
 - Generates separate training and validation datasets.
 
 The two files used by the modelling scripts are:
@@ -118,7 +117,7 @@ python "Code files/linear_regression_side_total.py"
 python "Code files/NN_Combined.py"
 ```
 
-The scripts now resolve the data directory relative to each script's location. This means you do not need to launch Python from the repository root or store the repository at a particular absolute path. The repository must still contain the expected `data files/` and `Code files/` folders, and the generated training and validation datasets must exist before running the two modelling scripts.
+The data-processing and modelling scripts resolve the data directory relative to each script's location. You do not need to launch Python from the repository root or store the repository at a particular absolute path. The repository must contain the expected `data files/` and `Code files/` folders, and the generated training and validation datasets must exist before running the modelling scripts.
 
 ## Project Objective
 
