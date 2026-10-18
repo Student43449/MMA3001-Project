@@ -10,6 +10,7 @@ this file, so the current working directory does not need to be the repository
 root.
 """
 
+# pandas reads and writes the CSV datasets; pathlib builds portable file paths.
 import pandas as pd
 from pathlib import Path
 
@@ -21,6 +22,7 @@ input_file = data_folder / "data.csv"
 output_file = data_folder / "cleaned_data.csv"
 
 # 1. Load the data, skipping the units row
+# The second CSV row contains units rather than observations, so it is skipped.
 df = pd.read_csv(input_file, skiprows=[1])
 print(f"Rows initially loaded: {len(df)}")
 
@@ -32,6 +34,7 @@ columns_to_drop = [
     "Impact Offset",
     "Impact Height",
 ]
+# Drop only the specified columns; pandas raises an error if a listed column is absent.
 df = df.drop(columns=columns_to_drop)
 
 # 3. Keep only Driver shots
@@ -39,6 +42,7 @@ df = df[df["Club"] == "Driver"].copy()
 print(f"Rows after filtering for Driver: {len(df)}")
 
 # 4. Remove rows containing any missing values
+# Keep only complete observations so later models receive numeric values for every field.
 df = df.dropna()
 print(f"Rows after removing missing values: {len(df)}")
 
@@ -63,6 +67,7 @@ for i, part in enumerate(data_parts, start=1):
     part.to_csv(divided_file, index=False)
     print(f"Divided data saved to: {divided_file} ({len(part)} rows)")
 # 7. Divide the data into 2 equal parts: Training and Validation
+# Use the same shuffled rows for both model datasets, with roughly half for each split.
 num_parts = 2
 chunk_size = len(shuffled_df) // num_parts
 
@@ -73,6 +78,7 @@ train_part.to_csv(train_output_file, index=False)
 print(f"Divided data saved to: {train_output_file} ({len(train_part)} rows)")
 
 # Part 2: Validation Data
+# Any remainder row goes into validation when the row count is odd.
 val_part = shuffled_df.iloc[chunk_size:]
 val_output_file = data_folder / "Validation data.csv"
 val_part.to_csv(val_output_file, index=False)
