@@ -13,14 +13,12 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, r2_score
 from sklearn.feature_selection import SelectKBest, f_regression
 import os
-import sys
 from pathlib import Path
 
 def run_side_total_regression_with_feature_selection(
     df_train_path,
     df_test_path,
-    feature_column_indices_start,
-    feature_column_indices_end,
+    feature_columns,
     k_features=5,
 ):
     """Fit and evaluate a feature-selected linear regression model for Side Total.
@@ -28,10 +26,8 @@ def run_side_total_regression_with_feature_selection(
     Args:
         df_train_path (str or pathlib.Path): Path to the training CSV file.
         df_test_path (str or pathlib.Path): Path to the validation/test CSV file.
-        feature_column_indices_start (int): Inclusive, zero-based start index of
-            the candidate feature columns.
-        feature_column_indices_end (int): Exclusive, zero-based end index of
-            the candidate feature columns.
+        feature_columns (list[str]): Explicit names of candidate predictor
+            columns. Target columns must not be included.
         k_features (int): Number of candidate features to retain, ranked using
             univariate linear-regression tests.
 
@@ -44,44 +40,48 @@ def run_side_total_regression_with_feature_selection(
         SystemExit: If the input data cannot be loaded, required target columns
             are missing, or no usable rows remain after numeric conversion.
     """
+    # Load training and validation data, preserving informative error messages.
     try:
-        # Load the training and testing data
         df_train_fs = pd.read_csv(df_train_path)
         df_test_fs = pd.read_csv(df_test_path)
+    except Exception as exc:
+        raise RuntimeError(f"Could not load training or validation data: {exc}") from exc
 
-        # Define all potential features (X) and target (y)
-        feature_cols_all = df_train_fs.columns[feature_column_indices_start : feature_column_indices_end]
-        target_col = 'Side Total'
+    target_col = "Side Total"
+    if not feature_columns:
+        raise ValueError("Provide at least one candidate feature column.")
+    if target_col in feature_columns or "Total" in feature_columns:
+        raise ValueError("Target columns must not be included among the input features.")
 
-        if target_col not in df_train_fs.columns or target_col not in df_test_fs.columns:
-            print("check data set")
-            sys.exit(1)
+    # Validate both datasets explicitly so column-order changes cannot alter inputs.
+    required_columns = list(feature_columns) + [target_col]
+    for dataset_name, dataset in (("training", df_train_fs), ("validation", df_test_fs)):
+        missing = [column for column in required_columns if column not in dataset.columns]
+        if missing:
+            raise ValueError(f"The {dataset_name} dataset is missing columns: {missing}")
 
-        # Prepare training data
-        X_train_fs = df_train_fs[feature_cols_all].apply(pd.to_numeric, errors='coerce')
-        y_train_fs = df_train_fs[target_col].apply(pd.to_numeric, errors='coerce')
+    # Convert selected predictors and the target to numeric values.
+    X_train_fs = df_train_fs.loc[:, feature_columns].apply(pd.to_numeric, errors="coerce")
+    y_train_fs = pd.to_numeric(df_train_fs[target_col], errors="coerce")
+    X_test_fs_all = df_test_fs.loc[:, feature_columns].apply(pd.to_numeric, errors="coerce")
+    y_test_fs_target = pd.to_numeric(df_test_fs[target_col], errors="coerce")
 
-        # Drop rows with NaN values introduced during numeric conversion and align
-        aligned_train_fs = pd.concat([X_train_fs, y_train_fs], axis=1).dropna()
-        X_train_fs = aligned_train_fs[feature_cols_all]
-        y_train_fs = aligned_train_fs[target_col]
+    # Drop rows with missing/non-numeric values while keeping predictors and targets aligned.
+    aligned_train_fs = pd.concat([X_train_fs, y_train_fs.rename(target_col)], axis=1).dropna()
+    aligned_test_fs = pd.concat([X_test_fs_all, y_test_fs_target.rename(target_col)], axis=1).dropna()
 
-        # Prepare testing data
-        X_test_fs_all = df_test_fs[feature_cols_all].apply(pd.to_numeric, errors='coerce')
-        y_test_fs_target = df_test_fs[target_col].apply(pd.to_numeric, errors='coerce')
+    X_train_fs = aligned_train_fs.loc[:, feature_columns]
+    y_train_fs = aligned_train_fs[target_col]
+    X_test_fs_all = aligned_test_fs.loc[:, feature_columns]
+    y_test_side_total = aligned_test_fs[target_col]
 
-        # Drop rows with NaN values introduced during numeric conversion and align
-        aligned_test_fs = pd.concat([X_test_fs_all, y_test_fs_target], axis=1).dropna()
-        X_test_fs_all = aligned_test_fs[feature_cols_all]
-        y_test_side_total = aligned_test_fs[target_col]
+    if aligned_train_fs.empty or aligned_test_fs.empty:
+        raise ValueError("No complete numeric rows remain in the training or validation dataset.")
 
-        if len(X_train_fs) == 0 or len(X_test_fs_all) == 0:
-            print("check data set")
-            sys.exit(1)
-
-    except Exception as e:
-        print("check data set")
-        sys.exit(1)
+    if not 1 <= k_features <= len(feature_columns):
+        raise ValueError(
+            f"k_features must be between 1 and {len(feature_columns)}; got {k_features}."
+        )
 
     # Feature Selection for 'Side Total'
     # Rank candidate features using their individual linear relationship with Side Total.
@@ -137,10 +137,17 @@ if __name__ == "__main__":
             "Run Data_processing.py first."
         )
 
-    # Run regression assuming features are between indices 1 and 10
+    # Candidate predictors are named explicitly; neither outcome is an input.
+    candidate_features = [
+        "Club Speed", "Attack Angle", "Club Path", "Low Point", "Swing Plane",
+        "Swing Direction", "Dyn. Loft", "Face Angle", "Face To Path", "Ball Speed",
+        "Smash Factor", "Launch Angle", "Launch Direction", "Spin Rate", "Spin Axis",
+    ]
     (mae_tr, r2_tr, y_tr_true, y_tr_pred,
      mae_val, r2_val, y_val_true, y_val_pred,
-     features) = run_side_total_regression_with_feature_selection(train_path, test_path, 1, 10, k_features=5)
+     features) = run_side_total_regression_with_feature_selection(
+        train_path, test_path, candidate_features, k_features=5
+    )
 
     print("\nSelected Features:", features)
 
