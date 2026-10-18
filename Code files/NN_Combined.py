@@ -1,3 +1,15 @@
+"""Train and evaluate a multi-output neural network for golf-shot outcomes.
+
+Uses TrackMan-derived swing and ball-strike measurements to predict Side Total
+and Total. The script loads prepared training and validation CSV files,
+standardises input features using training data statistics, trains a PyTorch
+neural network, reports mean-squared-error losses, and plots actual versus
+predicted values with MAE and R-squared metrics.
+
+Run Data_processing.py first. Dataset paths are resolved relative to this
+script, not the process's current working directory.
+"""
+
 import os
 import sys
 import pandas as pd
@@ -10,9 +22,15 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_absolute_error, r2_score
 from pathlib import Path
 
-# Define the Multi-Output Neural Network Architecture (predicts 2 target variables)
 class GolfNeuralNet(nn.Module):
+    """Fully connected network predicting Side Total and Total."""
+
     def __init__(self, input_dim):
+        """Initialise the network layers.
+
+        Args:
+            input_dim (int): Number of input features supplied to the network.
+        """
         super(GolfNeuralNet, self).__init__()
         self.fc1 = nn.Linear(input_dim, 500)
         self.relu1 = nn.ReLU()
@@ -21,6 +39,15 @@ class GolfNeuralNet(nn.Module):
         self.fc3 = nn.Linear(500, 2)  # Output layer predicting 2 values (Side Total, Total)
 
     def forward(self, x):
+        """Compute the two target predictions for a batch of input features.
+
+        Args:
+            x (torch.Tensor): Input tensor shaped (batch_size, input_dim).
+
+        Returns:
+            torch.Tensor: Predictions shaped (batch_size, 2), ordered as
+            Side Total then Total.
+        """
         out = self.fc1(x)
         out = self.relu1(out)
         out = self.fc2(out)
