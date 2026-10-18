@@ -185,7 +185,12 @@ def main():
         plt.ylabel('Predicted')
 
         plt.tight_layout()
-        plt.show()
+        output_dir = REPO_ROOT / "model outputs"
+        output_dir.mkdir(parents=True, exist_ok=True)
+        figure_path = output_dir / f"nn_combined_{target_name.lower().replace(' ', '_')}.png"
+        plt.savefig(figure_path, dpi=150, bbox_inches="tight")
+        print(f"Saved graph: {figure_path}")
+        plt.close()
 
 
 if __name__ == "__main__":
