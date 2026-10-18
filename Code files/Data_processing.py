@@ -1,3 +1,15 @@
+"""Prepare TrackMan golf-shot data for regression and neural-network modelling.
+
+Reads the original CSV from the repository's data files directory, skips the
+measurement-units row, removes unused columns, keeps Driver shots, removes rows
+with missing values, and writes the cleaned dataset. It also creates four
+shuffled data partitions plus separate training and validation CSV files.
+
+Run this script before either modelling script. Paths are resolved relative to
+this file, so the current working directory does not need to be the repository
+root.
+"""
+
 import pandas as pd
 from pathlib import Path
 
