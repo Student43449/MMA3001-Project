@@ -17,9 +17,11 @@ import torch.optim as optim
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_absolute_error, r2_score
 
+# Single-output network: its final layer returns one prediction per golf shot.
 # Single-Output Neural Network (1 output node for Side Total)
 class GolfNeuralNet(nn.Module):
     def __init__(self, input_dim):
+        """Build hidden layers and a single Side Total output."""
         super(GolfNeuralNet, self).__init__()
         self.network = nn.Sequential(
             nn.Linear(input_dim, 100),
@@ -30,9 +32,11 @@ class GolfNeuralNet(nn.Module):
         )
 
     def forward(self, x):
+        """Return the predicted Side Total for each input row."""
         return self.network(x)
 
 def prompt_multiple_files(dataset_type):
+    """Interactively collect existing CSV paths for one dataset split."""
     file_paths = []
     print(f"\n--- Configure {dataset_type} Datasets ---")
     while True:
@@ -49,6 +53,7 @@ def prompt_multiple_files(dataset_type):
     return file_paths
 
 def load_and_combine_data(file_paths, feature_start=3, feature_end=18, target_col='Side Total'):
+    """Combine CSVs and return numeric feature and target data with incomplete rows removed."""
     dfs = []
     for path in file_paths:
         try:
@@ -61,12 +66,14 @@ def load_and_combine_data(file_paths, feature_start=3, feature_end=18, target_co
             print("Check dataset")
             sys.exit(1)
 
+    # Concatenate rows and reset the index so duplicate source indices do not matter.
     combined_df = pd.concat(dfs, ignore_index=True)
     feature_cols = combined_df.columns[feature_start:feature_end]
 
     X = combined_df[feature_cols].apply(pd.to_numeric, errors='coerce')
     y = combined_df[[target_col]].apply(pd.to_numeric, errors='coerce')
 
+    # Drop a row if any selected feature or the target failed numeric conversion or is missing.
     aligned = pd.concat([X, y], axis=1).dropna()
     X = aligned[feature_cols]
     y = aligned[target_col]
@@ -91,6 +98,7 @@ if __name__ == '__main__':
     X_train, y_train = load_and_combine_data(train_files, target_col=target)
     X_val, y_val = load_and_combine_data(val_files, target_col=target)
 
+    # Standardise each feature using training-set means and standard deviations only.
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     X_val_scaled = scaler.transform(X_val)
@@ -101,6 +109,7 @@ if __name__ == '__main__':
     y_val_t = torch.FloatTensor(y_val.values).unsqueeze(1)
 
     model = GolfNeuralNet(X_train_scaled.shape[1])
+    # MSE is the optimisation objective; Adam updates weights to reduce this loss.
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=0.01)
 
@@ -109,16 +118,19 @@ if __name__ == '__main__':
     val_losses = []
 
     print(f"\nTraining Neural Network Model for {target}...")
+    # Repeat the training and validation evaluation for the configured number of epochs.
     for epoch in range(1, epochs + 1):
         model.train()
         optimizer.zero_grad()
 
         predictions = model(X_train_t)
         loss = criterion(predictions, y_train_t)
+        # Calculate gradients from the training loss, then apply one optimiser step.
         loss.backward()
         optimizer.step()
 
         model.eval()
+        # Evaluate validation loss without tracking gradients or changing model weights.
         with torch.no_grad():
             val_preds = model(X_val_t)
             val_loss = criterion(val_preds, y_val_t)
@@ -134,6 +146,7 @@ if __name__ == '__main__':
         train_preds_np = model(X_train_t).numpy().flatten()
         val_preds_np = model(X_val_t).numpy().flatten()
 
+    # Compare training and validation loss over time to help spot poor generalisation.
     # Plot Loss Convergence
     plt.figure(figsize=(8, 5))
     plt.plot(range(1, epochs + 1), train_losses, label='Train Loss', color='teal')
@@ -157,6 +170,7 @@ if __name__ == '__main__':
     print(f"\n=== Validation Set: {target} Evaluation Error Table ===")
     print(pd.DataFrame({'Metric': ['MAE', 'R² Score'], 'Value': [mae_val, r2_val]}).to_string(index=False))
 
+    # Compare predictions with measured values; the dashed diagonal is the perfect-fit line.
     # Plot Train Scatter
     plt.figure(figsize=(8, 6))
     plt.scatter(y_train.values, train_preds_np, color='green', alpha=0.5, edgecolors='k', label='Train (Side Total Only)')
