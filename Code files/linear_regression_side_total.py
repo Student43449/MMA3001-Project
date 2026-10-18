@@ -5,6 +5,7 @@ from sklearn.metrics import mean_absolute_error, r2_score
 from sklearn.feature_selection import SelectKBest, f_regression
 import os
 import sys
+from pathlib import Path
 
 def run_side_total_regression_with_feature_selection(df_train_path, df_test_path, feature_column_indices_start, feature_column_indices_end, k_features=5):
     """
@@ -89,21 +90,25 @@ def run_side_total_regression_with_feature_selection(df_train_path, df_test_path
     )
 
 if __name__ == "__main__":
-    print("--- Side Total Linear Regression Configuration ---")
-    
-    # Loop until correct training dataset path is provided
-    while True:
-        train_path = '/content/MMA3001-Project/data files/Training data.csv'
-        if os.path.exists(train_path):
-            break
-        print("Error: Training dataset file does not exist. Please check the path and try again.\n")
+    # Resolve data paths relative to this script so the current working directory
+    # does not need to be the repository root.
+    repo_root = Path(__file__).resolve().parent.parent
+    data_folder = repo_root / "data files"
 
-    # Loop until correct validation dataset path is provided
-    while True:
-        test_path = '/content/MMA3001-Project/data files/Validation data.csv'
-        if os.path.exists(test_path):
-            break
-        print("Error: Validation dataset file does not exist. Please check the path and try again.\n")
+    train_path = data_folder / "Training data.csv"
+    test_path = data_folder / "Validation data.csv"
+
+    if not train_path.is_file():
+        raise FileNotFoundError(
+            f"Training dataset not found: {train_path}. "
+            "Run Data_processing.py first."
+        )
+
+    if not test_path.is_file():
+        raise FileNotFoundError(
+            f"Validation dataset not found: {test_path}. "
+            "Run Data_processing.py first."
+        )
 
     # Run regression assuming features are between indices 1 and 10
     (mae_tr, r2_tr, y_tr_true, y_tr_pred,
