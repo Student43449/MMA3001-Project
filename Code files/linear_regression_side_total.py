@@ -37,8 +37,8 @@ def run_side_total_regression_with_feature_selection(
         and the list of selected feature names.
 
     Raises:
-        SystemExit: If the input data cannot be loaded, required target columns
-            are missing, or no usable rows remain after numeric conversion.
+        RuntimeError: If the training or validation CSV cannot be read.
+        ValueError: If required columns are missing or no usable numeric rows remain.
     """
     # Load training and validation data, preserving informative error messages.
     try:
