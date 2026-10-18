@@ -1,9 +1,9 @@
 """Train a neural network to predict golf-shot total distance.
 
-The script combines selected CSV datasets, standardises the input features,
-trains a single-output PyTorch model, and reports training and validation
-MAE and R² scores. It also plots loss convergence and actual-versus-predicted
-results.
+The script loads the prepared training and validation datasets, standardises
+the named input features, trains a single-output PyTorch model, and reports
+training and validation MAE and R² scores. It also plots loss convergence and
+actual-versus-predicted results.
 """
 
 from pathlib import Path
