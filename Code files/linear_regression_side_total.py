@@ -93,14 +93,14 @@ if __name__ == "__main__":
     
     # Loop until correct training dataset path is provided
     while True:
-        train_path = input("Enter path to training dataset (e.g., /content/MMA3001-Project/divided_data_1.csv): ").strip()
+        train_path = '/content/MMA3001-Project/data files/Training data.csv'
         if os.path.exists(train_path):
             break
         print("Error: Training dataset file does not exist. Please check the path and try again.\n")
 
     # Loop until correct validation dataset path is provided
     while True:
-        test_path = input("Enter path to validation/testing dataset (e.g., /content/MMA3001-Project/divided_data_2.csv): ").strip()
+        test_path = '/content/MMA3001-Project/data files/Validation data.csv'
         if os.path.exists(test_path):
             break
         print("Error: Validation dataset file does not exist. Please check the path and try again.\n")
