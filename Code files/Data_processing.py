@@ -54,20 +54,9 @@ print(f"Final number of rows: {len(df)}")
 print(f"Final number of columns: {len(df.columns)}")
 
 
-# 6. Divide the cleaned dataset into four approximately equal, shuffled datasets.
-# A fixed random seed makes the split reproducible whenever this script is run.
-# The four files together contain every cleaned row exactly once.
-import numpy as np
-
+# 6. Shuffle once with a fixed seed, then create training and validation datasets.
+# A fixed seed makes the split reproducible whenever the input data is unchanged.
 shuffled_df = df.sample(frac=1, random_state=42).reset_index(drop=True)
-data_parts = np.array_split(shuffled_df, 4)
-
-for i, part in enumerate(data_parts, start=1):
-    divided_file = data_folder / f"divided_data_{i}.csv"
-    part.to_csv(divided_file, index=False)
-    print(f"Divided data saved to: {divided_file} ({len(part)} rows)")
-# 7. Divide the data into 2 equal parts: Training and Validation
-# Use the same shuffled rows for both model datasets, with roughly half for each split.
 num_parts = 2
 chunk_size = len(shuffled_df) // num_parts
 
