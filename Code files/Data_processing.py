@@ -2,8 +2,8 @@
 
 Reads the original CSV from the repository's data files directory, skips the
 measurement-units row, removes unused columns, keeps Driver shots, removes rows
-with missing values, and writes the cleaned dataset. It also creates four
-shuffled data partitions plus separate training and validation CSV files.
+with missing values, and writes the cleaned dataset plus separate training
+and validation CSV files.
 
 Run this script before either modelling script. Paths are resolved relative to
 this file, so the current working directory does not need to be the repository
@@ -64,11 +64,11 @@ chunk_size = len(shuffled_df) // num_parts
 train_part = shuffled_df.iloc[0:chunk_size]
 train_output_file = data_folder / "Training data.csv"
 train_part.to_csv(train_output_file, index=False)
-print(f"Divided data saved to: {train_output_file} ({len(train_part)} rows)")
+print(f"Training data saved to: {train_output_file} ({len(train_part)} rows)")
 
 # Part 2: Validation Data
 # Any remainder row goes into validation when the row count is odd.
 val_part = shuffled_df.iloc[chunk_size:]
 val_output_file = data_folder / "Validation data.csv"
 val_part.to_csv(val_output_file, index=False)
-print(f"Divided data saved to: {val_output_file} ({len(val_part)} rows)")
+print(f"Validation data saved to: {val_output_file} ({len(val_part)} rows)")
