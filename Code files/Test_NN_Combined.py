@@ -10,7 +10,10 @@ The NN_Combined.py script trains for 150 epochs and displays plots when run.
 To avoid doing that during testing, this file reads its Python syntax tree and
 loads only the GolfNeuralNet class, without executing the training script.
 
-Run from the repository root:
+Run directly from a Colab notebook:
+    !python "Code files/Test_NN_Combined.py"
+
+Or run with pytest from the repository root:
     python -m pytest "Code files/Test_NN_Combined.py" -v
 
 Requires: pytest, torch, numpy, scikit-learn.
@@ -152,3 +155,15 @@ def test_one_training_step_updates_weights(network_class):
         not torch.equal(before, after)
         for before, after in zip(original_weights, model.parameters())
     ), "No network parameters changed during training"
+
+
+if __name__ == "__main__":
+    # Running this file directly (for example with !python in Colab) now
+    # launches pytest and prints the individual PASS/FAIL results to output.
+    # This block is skipped when pytest imports the file during test discovery.
+    import sys
+
+    print("\nRunning NN_Combined.py unit tests...\n", flush=True)
+    exit_code = pytest.main([str(Path(__file__).resolve()), "-v", "-s", "--tb=short"])
+    # Forward pytest's result code so a failing test is not reported as success.
+    sys.exit(int(exit_code))
