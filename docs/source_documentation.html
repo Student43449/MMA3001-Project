@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MMA3001 Golf ML — Source Documentation</title>
-<style>:root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#182332;background:#f7f9fc}body{margin:0}header{background:#122b48;color:white;padding:2rem max(1rem,calc((100vw - 1100px)/2))}header p{color:#c7d6e8}main{max-width:1100px;margin:auto;display:grid;grid-template-columns:220px minmax(0,1fr);gap:2rem;padding:2rem 1rem}nav{position:sticky;top:1rem;align-self:start}nav a{display:block;padding:.65rem;color:#17598c;text-decoration:none;overflow-wrap:anywhere}section{background:white;border:1px solid #e2e8ef;border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;overflow:hidden}h2{overflow-wrap:anywhere}h3{margin-top:1.7rem}.description{white-space:pre-line;line-height:1.6;color:#42556b}article{border-bottom:1px solid #edf0f4;padding:.75rem 0}code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}code{overflow-wrap:anywhere}.kind{font-size:.75rem;text-transform:uppercase;color:#496984;font-weight:700;margin-right:.6rem}details{margin-top:1.5rem}summary{cursor:pointer;color:#17598c;font-weight:600}pre{background:#101c2d;color:#e1e9f4;padding:1rem;overflow:auto;font-size:.8rem;line-height:1.5;max-height:70vh}footer{max-width:1100px;margin:1rem auto 3rem;padding:0 1rem;color:#52657a;font-size:.85rem}@media(max-width:720px){main{display:block}nav{position:static;margin-bottom:1rem}nav a{display:inline-block}}</style></head>
-<body><header><h1>MMA3001 Golf Prediction — Source Documentation</h1><p>Documented Python modules, API overview and complete source code</p></header>
-<main><nav><strong>Modules</strong><a href="#file0">Main.py</a><a href="#file1">Code files/NN_Combined.py</a><a href="#file2">Code files/Test_NN_Combined.py</a><a href="#file3">Code files/linear_regression_side_total.py</a><a href="#file4">Code files/Data_processing.py</a></nav><div><section id="file0"><h2>Main.py</h2><p class="description">Run the golf-shot prediction workflow and display its results.
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MMA3001 Project | Source documentation</title><style>
+:root{color-scheme:light;font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;background:#f5f7fa;color:#16283b}*{box-sizing:border-box}body{margin:0}header{background:#142c46;color:#fff;padding:32px max(20px,calc((100vw - 1180px)/2))}header h1{margin:0 0 8px;font-size:clamp(1.6rem,3vw,2.2rem)}header p{margin:0;color:#d2dfeb}.layout{max-width:1180px;margin:0 auto;padding:28px 20px;display:grid;grid-template-columns:235px minmax(0,1fr);gap:28px}nav{position:sticky;top:18px;align-self:start;background:white;border:1px solid #e1e7ed;border-radius:12px;padding:16px}nav strong{display:block;margin-bottom:10px}nav a{display:block;text-decoration:none;color:#175e9a;padding:8px 5px;overflow-wrap:anywhere;border-radius:5px}nav a:hover{background:#eef5fb}section{background:#fff;border:1px solid #e1e7ed;border-radius:12px;padding:24px;margin-bottom:22px;overflow:hidden;scroll-margin-top:18px}h2{margin:6px 0 16px;overflow-wrap:anywhere}h3{margin:25px 0 12px;font-size:1.05rem}.eyebrow{color:#59738d;font-size:.75rem;letter-spacing:.09em;font-weight:700}.doc{white-space:pre-line;color:#3d5369}.small{font-size:.9rem;margin:9px 0 0}.api{padding:13px 0;border-bottom:1px solid #edf0f4}.pill{font-size:.72rem;font-weight:700;color:#205b85;background:#eaf2f8;padding:4px 7px;border-radius:5px;margin-right:8px}code,pre{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}code{overflow-wrap:anywhere}details{margin-top:22px}summary{cursor:pointer;color:#155d9c;font-weight:600}pre{padding:18px;background:#111e30;color:#e7eef7;overflow:auto;max-height:75vh;font-size:.79rem;line-height:1.55;border-radius:8px}footer{max-width:1180px;margin:0 auto;padding:0 20px 35px;color:#587087;font-size:.85rem}@media(max-width:760px){.layout{display:block}nav{position:static;margin-bottom:22px}nav a{display:inline-block;margin-right:8px}section{padding:18px}}
+</style></head><body><header><h1>MMA3001 Golf ML — Source Documentation</h1><p>Current source code, module docstrings, functions, classes and test descriptions · Updated 18 October 2026</p></header><div class="layout"><nav><strong>Browse modules</strong><a href="#module-0">Main.py</a><a href="#module-1">Code files/Data_processing.py</a><a href="#module-2">Code files/linear_regression_side_total.py</a><a href="#module-3">Code files/NN_Combined.py</a><a href="#module-4">Code files/Test_NN_Combined.py</a></nav><main><section id="module-0"><div class="eyebrow">MODULE 1 OF 5</div><h2>Main.py</h2><p class="doc">Run the golf-shot prediction workflow and display its results.
 
 Runs data preparation, linear regression and the combined neural network.
 Each child script prints its progress and saves evaluation graphs as PNGs.
@@ -12,7 +10,7 @@ For inline graphs in Google Colab, run in a notebook cell:
 
 Using !python also runs the workflow, but cannot render inline notebook
 images from the separate Python process. PNGs are still saved to model outputs.
-</p><h3>API reference</h3><article><span class="kind">Function</span> <code>run_script(filename)</code></article><article><span class="kind">Function</span> <code>show_graphs()</code></article><article><span class="kind">Function</span> <code>main()</code></article><details><summary>View complete Python source</summary><pre><code>&quot;&quot;&quot;Run the golf-shot prediction workflow and display its results.
+</p><h3>Classes and functions</h3><div class="api"><div><span class="pill">Function</span> <code>run_script(filename)</code></div><p class="doc small">Execute one project script and stream its printed output and errors.</p></div><div class="api"><div><span class="pill">Function</span> <code>show_graphs()</code></div><p class="doc small">Display saved figures inline in IPython, or print their file paths.</p></div><div class="api"><div><span class="pill">Function</span> <code>main()</code></div><p class="doc small">Prepare data, evaluate both models, and show the saved graphs.</p></div><details><summary>Show full source code</summary><pre><code>&quot;&quot;&quot;Run the golf-shot prediction workflow and display its results.
 
 Runs data preparation, linear regression and the combined neural network.
 Each child script prints its progress and saves evaluation graphs as PNGs.
@@ -93,417 +91,121 @@ def main():
 
 if __name__ == &quot;__main__&quot;:
     main()
-</code></pre></details></section>
-<section id="file1"><h2>Code files/NN_Combined.py</h2><p class="description">Train and evaluate a multi-output neural network for golf-shot outcomes.
+</code></pre></details></section><section id="module-1"><div class="eyebrow">MODULE 2 OF 5</div><h2>Code files/Data_processing.py</h2><p class="doc">Prepare TrackMan golf-shot data for regression and neural-network modelling.
 
-Uses TrackMan-derived swing and ball-strike measurements to predict Side Total
-and Total. The script loads prepared training and validation CSV files,
-standardises input features using training data statistics, trains a PyTorch
-neural network, reports mean-squared-error losses, and plots actual versus
-predicted values with MAE and R-squared metrics.
+Reads the original CSV from the repository's data files directory, skips the
+measurement-units row, removes unused columns, keeps Driver shots, removes rows
+with missing values, and writes the cleaned dataset plus separate training
+and validation CSV files.
 
-Run Data_processing.py first. Dataset paths are resolved relative to this
-script, not the process's current working directory.
-</p><h3>API reference</h3><article><span class="kind">Class</span> <code>GolfNeuralNet(nn.Module)</code></article><article><span class="kind">Function</span> <code>main()</code></article><details><summary>View complete Python source</summary><pre><code>&quot;&quot;&quot;Train and evaluate a multi-output neural network for golf-shot outcomes.
+Run this script before either modelling script. Paths are resolved relative to
+this file, so the current working directory does not need to be the repository
+root.
+</p><h3>Classes and functions</h3><p>No class or function definitions; this script runs its workflow at the top level.</p><details><summary>Show full source code</summary><pre><code>&quot;&quot;&quot;Prepare TrackMan golf-shot data for regression and neural-network modelling.
 
-Uses TrackMan-derived swing and ball-strike measurements to predict Side Total
-and Total. The script loads prepared training and validation CSV files,
-standardises input features using training data statistics, trains a PyTorch
-neural network, reports mean-squared-error losses, and plots actual versus
-predicted values with MAE and R-squared metrics.
+Reads the original CSV from the repository's data files directory, skips the
+measurement-units row, removes unused columns, keeps Driver shots, removes rows
+with missing values, and writes the cleaned dataset plus separate training
+and validation CSV files.
 
-Run Data_processing.py first. Dataset paths are resolved relative to this
-script, not the process's current working directory.
+Run this script before either modelling script. Paths are resolved relative to
+this file, so the current working directory does not need to be the repository
+root.
 &quot;&quot;&quot;
 
-import os
-import sys
+# pandas reads and writes the CSV datasets; pathlib builds portable file paths.
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import torch
-import torch.nn as nn
-import torch.optim as optim
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import mean_absolute_error, r2_score
 from pathlib import Path
 
-# The network maps the 15 input measurements to two outputs: Side Total and Total.
-class GolfNeuralNet(nn.Module):
-    &quot;&quot;&quot;Fully connected network predicting Side Total and Total.&quot;&quot;&quot;
-
-    def __init__(self, input_dim):
-        &quot;&quot;&quot;Initialise the network layers.
-
-        Args:
-            input_dim (int): Number of input features supplied to the network.
-        &quot;&quot;&quot;
-        super(GolfNeuralNet, self).__init__()
-        # Hidden fully connected layers learn nonlinear combinations of input measurements.
-        self.fc1 = nn.Linear(input_dim, 500)
-        self.relu1 = nn.ReLU()
-        self.fc2 = nn.Linear(500, 500)
-        self.relu2 = nn.ReLU()
-        self.fc3 = nn.Linear(500, 2)  # Output layer predicting 2 values (Side Total, Total)
-
-    def forward(self, x):
-        &quot;&quot;&quot;Compute the two target predictions for a batch of input features.
-
-        Args:
-            x (torch.Tensor): Input tensor shaped (batch_size, input_dim).
-
-        Returns:
-            torch.Tensor: Predictions shaped (batch_size, 2), ordered as
-            Side Total then Total.
-        &quot;&quot;&quot;
-        out = self.fc1(x)
-        out = self.relu1(out)
-        out = self.fc2(out)
-        out = self.relu2(out)
-        out = self.fc3(out)
-        return out
-
-# Resolve data paths relative to this script so the current working directory
-# and absolute repository location do not need to be hard-coded.
+# Resolve paths from this script's location, not the current working directory.
+# This assumes the script is stored in the repository's &quot;Code files&quot; directory.
 REPO_ROOT = Path(__file__).resolve().parent.parent
-DATA_FOLDER = REPO_ROOT / &quot;data files&quot;
+data_folder = REPO_ROOT / &quot;data files&quot;
+input_file = data_folder / &quot;data.csv&quot;
+output_file = data_folder / &quot;cleaned_data.csv&quot;
 
-# Explicit input and target names are shared by training and source-level tests.
-features = [
-    'Club Speed', 'Attack Angle', 'Club Path', 'Low Point', 'Swing Plane',
-    'Swing Direction', 'Dyn. Loft', 'Face Angle', 'Face To Path', 'Ball Speed',
-    'Smash Factor', 'Launch Angle', 'Launch Direction', 'Spin Rate', 'Spin Axis'
+# 1. Load the data, skipping the units row
+# The second CSV row contains units rather than observations, so it is skipped.
+df = pd.read_csv(input_file, skiprows=[1])
+print(f&quot;Rows initially loaded: {len(df)}&quot;)
+
+# 2. Remove columns not required for the model
+# These columns contain missing values and are excluded from the cleaned dataset.
+columns_to_drop = [
+    &quot;Ball&quot;,
+    &quot;Dynamic Lie&quot;,
+    &quot;Impact Offset&quot;,
+    &quot;Impact Height&quot;,
 ]
-targets = ['Side Total', 'Total']
+# Drop only the specified columns; pandas raises an error if a listed column is absent.
+df = df.drop(columns=columns_to_drop)
+
+# 3. Keep only Driver shots
+df = df[df[&quot;Club&quot;] == &quot;Driver&quot;].copy()
+print(f&quot;Rows after filtering for Driver: {len(df)}&quot;)
+
+# 4. Remove rows containing any missing values
+# Keep only complete observations so later models receive numeric values for every field.
+df = df.dropna()
+print(f&quot;Rows after removing missing values: {len(df)}&quot;)
+
+# 5. Save the cleaned dataset
+df.to_csv(output_file, index=False)
+
+print(f&quot;Cleaned data saved to: {output_file}&quot;)
+print(f&quot;Final number of rows: {len(df)}&quot;)
+print(f&quot;Final number of columns: {len(df.columns)}&quot;)
 
 
-def main():
-    &quot;&quot;&quot;Load datasets, train the combined model and plot evaluation results.
+# 6. Shuffle once with a fixed seed, then create training and validation datasets.
+# A fixed seed makes the split reproducible whenever the input data is unchanged.
+shuffled_df = df.sample(frac=1, random_state=42).reset_index(drop=True)
+num_parts = 2
+chunk_size = len(shuffled_df) // num_parts
 
-    Called only when this script is run directly, so importing GolfNeuralNet
-    for documentation or testing does not trigger training or plotting.
-    &quot;&quot;&quot;
-    # Load the Training and Validation datasets.
-    train_file = DATA_FOLDER / &quot;Training data.csv&quot;
-    val_file = DATA_FOLDER / &quot;Validation data.csv&quot;
+# Part 1: Training Data
+train_part = shuffled_df.iloc[0:chunk_size]
+train_output_file = data_folder / &quot;Training data.csv&quot;
+train_part.to_csv(train_output_file, index=False)
+print(f&quot;Training data saved to: {train_output_file} ({len(train_part)} rows)&quot;)
 
-    if not train_file.is_file():
-        raise FileNotFoundError(
-            f&quot;Training dataset not found: {train_file}. &quot;
-            &quot;Run Data_processing.py first.&quot;
-        )
-    if not val_file.is_file():
-        raise FileNotFoundError(
-            f&quot;Validation dataset not found: {val_file}. &quot;
-            &quot;Run Data_processing.py first.&quot;
-        )
-
-    train_df = pd.read_csv(train_file)
-    val_df = pd.read_csv(val_file)
-
-    # Split into features (X) and targets (y) using available, verified columns
-    X_train = train_df[features]
-    y_train = train_df[targets]
-    X_val = val_df[features]
-    y_val = val_df[targets]
-
-    # Normalize features
-    # Fit scaling parameters on training data only; reuse them unchanged for validation.
-    scaler = StandardScaler()
-    X_train_scaled = scaler.fit_transform(X_train)
-    X_val_scaled = scaler.transform(X_val)
-
-    # Convert to PyTorch Tensors
-    X_train_tensor = torch.tensor(X_train_scaled, dtype=torch.float32)
-    y_train_tensor = torch.tensor(y_train.values, dtype=torch.float32)
-    X_val_tensor = torch.tensor(X_val_scaled, dtype=torch.float32)
-    y_val_tensor = torch.tensor(y_val.values, dtype=torch.float32)
-
-    # Instantiate Model, Loss Function, and Optimizer
-    model = GolfNeuralNet(len(features))
-    # MSE penalises squared differences between predicted and measured target values.
-    criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.01)
-
-    # Train the Model
-    print(&quot;\nTraining Multi-Output Neural Network Model...&quot;)
-    epochs = 150
-    train_losses = []
-    val_losses = []
-
-    # One epoch is a complete optimisation pass over the training dataset.
-    for epoch in range(1, epochs + 1):
-        model.train()
-        optimizer.zero_grad()
-        outputs = model(X_train_tensor)
-        loss = criterion(outputs, y_train_tensor)
-        # Backpropagate the loss gradients, then update the model weights.
-        loss.backward()
-        optimizer.step()
-
-        # Validation data measures generalisation; it is not used for gradient updates.
-        # Evaluate on Validation set
-        model.eval()
-        with torch.no_grad():
-            val_outputs = model(X_val_tensor)
-            val_loss = criterion(val_outputs, y_val_tensor)
-
-        train_losses.append(loss.item())
-        val_losses.append(val_loss.item())
-
-        if epoch == 1 or epoch % 25 == 0:
-            print(f&quot;Epoch {epoch:03d}/{epochs} | Train Loss (MSE): {loss.item():.4f} | Val Loss (MSE): {val_loss.item():.4f}&quot;)
-
-    # Model evaluation
-    model.eval()
-    # Disable gradient tracking during final prediction to reduce overhead.
-    with torch.no_grad():
-        train_preds_np = model(X_train_tensor).numpy()
-        val_preds_np = model(X_val_tensor).numpy()
-
-    # Plot actual vs predicted values side-by-side
-    for idx, target_name in enumerate(targets):
-        plt.figure(figsize=(12, 5))
-
-        # Compare predictions with known targets; the dashed diagonal indicates perfect predictions.
-        # Train plot
-        plt.subplot(1, 2, 1)
-        tr_true = y_train.values[:, idx]
-        tr_pred = train_preds_np[:, idx]
-        mae_tr = mean_absolute_error(tr_true, tr_pred)
-        r2_tr = r2_score(tr_true, tr_pred)
-        plt.scatter(tr_true, tr_pred, alpha=0.3, color='blue')
-        plt.plot([tr_true.min(), tr_true.max()], [tr_true.min(), tr_true.max()], 'r--', lw=2)
-        plt.title(f'Train: Actual vs Pred ({target_name})\nMAE: {mae_tr:.2f}, R²: {r2_tr:.4f}')
-        plt.xlabel('Actual')
-        plt.ylabel('Predicted')
-
-        # Val plot
-        plt.subplot(1, 2, 2)
-        v_true = y_val.values[:, idx]
-        v_pred = val_preds_np[:, idx]
-        mae_val = mean_absolute_error(v_true, v_pred)
-        r2_val = r2_score(v_true, v_pred)
-        plt.scatter(v_true, v_pred, alpha=0.3, color='green')
-        plt.plot([v_true.min(), v_true.max()], [v_true.min(), v_true.max()], 'r--', lw=2)
-        plt.title(f'Val: Actual vs Pred ({target_name})\nMAE: {mae_val:.2f}, R²: {r2_val:.4f}')
-        plt.xlabel('Actual')
-        plt.ylabel('Predicted')
-
-        plt.tight_layout()
-        output_dir = REPO_ROOT / &quot;model outputs&quot;
-        output_dir.mkdir(parents=True, exist_ok=True)
-        figure_path = output_dir / f&quot;nn_combined_{target_name.lower().replace(' ', '_')}.png&quot;
-        plt.savefig(figure_path, dpi=150, bbox_inches=&quot;tight&quot;)
-        print(f&quot;Saved graph: {figure_path}&quot;)
-        plt.close()
-
-
-if __name__ == &quot;__main__&quot;:
-    main()
-</code></pre></details></section>
-<section id="file2"><h2>Code files/Test_NN_Combined.py</h2><p class="description">Unit tests for the combined golf-shot neural network.
-
-These tests check four important behaviours:
-1. The target columns are not used as input features (preventing data leakage).
-2. The network produces two predictions per shot.
-3. The scaler learns statistics only from training data.
-4. One training step updates network weights and produces a finite loss.
-
-The NN_Combined.py script trains for 150 epochs and displays plots when run.
-To avoid doing that during testing, this file reads its Python syntax tree and
-loads only the GolfNeuralNet class, without executing the training script.
-
-Run directly from a Colab notebook:
-    !python &quot;Code files/Test_NN_Combined.py&quot;
-
-Or run with pytest from the repository root:
-    python -m pytest &quot;Code files/Test_NN_Combined.py&quot; -v
-
-Requires: pytest, torch, numpy, scikit-learn.
-</p><h3>API reference</h3><article><span class="kind">Function</span> <code>script_tree()</code></article><article><span class="kind">Function</span> <code>assigned_value(tree, variable_name)</code></article><article><span class="kind">Function</span> <code>network_class(script_tree)</code></article><article><span class="kind">Function</span> <code>test_features_exclude_targets(script_tree)</code></article><article><span class="kind">Function</span> <code>test_network_output_dimensions(network_class)</code></article><article><span class="kind">Function</span> <code>test_scaler_uses_training_data_only(script_tree)</code></article><article><span class="kind">Function</span> <code>test_one_training_step_updates_weights(network_class)</code></article><details><summary>View complete Python source</summary><pre><code>&quot;&quot;&quot;Unit tests for the combined golf-shot neural network.
-
-These tests check four important behaviours:
-1. The target columns are not used as input features (preventing data leakage).
-2. The network produces two predictions per shot.
-3. The scaler learns statistics only from training data.
-4. One training step updates network weights and produces a finite loss.
-
-The NN_Combined.py script trains for 150 epochs and displays plots when run.
-To avoid doing that during testing, this file reads its Python syntax tree and
-loads only the GolfNeuralNet class, without executing the training script.
-
-Run directly from a Colab notebook:
-    !python &quot;Code files/Test_NN_Combined.py&quot;
-
-Or run with pytest from the repository root:
-    python -m pytest &quot;Code files/Test_NN_Combined.py&quot; -v
-
-Requires: pytest, torch, numpy, scikit-learn.
-&quot;&quot;&quot;
-
-import ast
-from pathlib import Path
-
-import numpy as np
-import pytest
-import torch
-from sklearn.preprocessing import StandardScaler
-
-
-# Locate the real script regardless of the directory pytest was started from.
-SCRIPT_PATH = Path(__file__).resolve().with_name(&quot;NN_Combined.py&quot;)
-
-
-@pytest.fixture(scope=&quot;module&quot;)
-def script_tree():
-    &quot;&quot;&quot;Parse the source without running its training or plotting code.&quot;&quot;&quot;
-    return ast.parse(SCRIPT_PATH.read_text(encoding=&quot;utf-8&quot;), filename=str(SCRIPT_PATH))
-
-
-def assigned_value(tree, variable_name):
-    &quot;&quot;&quot;Return a literal list assigned to a top-level variable in the script.&quot;&quot;&quot;
-    for node in tree.body:
-        if isinstance(node, ast.Assign):
-            if any(
-                isinstance(target, ast.Name) and target.id == variable_name
-                for target in node.targets
-            ):
-                return ast.literal_eval(node.value)
-    pytest.fail(f&quot;Could not find a simple assignment for {variable_name!r}&quot;)
-
-
-@pytest.fixture(scope=&quot;module&quot;)
-def network_class(script_tree):
-    &quot;&quot;&quot;Load only GolfNeuralNet, avoiding the script's top-level training loop.&quot;&quot;&quot;
-    class_node = next(
-        (node for node in script_tree.body
-         if isinstance(node, ast.ClassDef) and node.name == &quot;GolfNeuralNet&quot;),
-        None,
-    )
-    assert class_node is not None, &quot;GolfNeuralNet class is missing&quot;
-    # Compile the class definition in isolation; nn must exist in its namespace.
-    namespace = {&quot;nn&quot;: torch.nn}
-    isolated_module = ast.fix_missing_locations(
-        ast.Module(body=[class_node], type_ignores=[])
-    )
-    exec(compile(isolated_module, str(SCRIPT_PATH), &quot;exec&quot;), namespace)
-    return namespace[&quot;GolfNeuralNet&quot;]
-
-
-def test_features_exclude_targets(script_tree):
-    &quot;&quot;&quot;The measured outcomes must never be passed to the network as inputs.&quot;&quot;&quot;
-    features = assigned_value(script_tree, &quot;features&quot;)
-    targets = assigned_value(script_tree, &quot;targets&quot;)
-
-    assert targets == [&quot;Side Total&quot;, &quot;Total&quot;]
-    assert len(features) == 15
-    assert len(features) == len(set(features)), &quot;Input features contain duplicates&quot;
-    assert not set(features).intersection(targets), &quot;Target leakage into input features&quot;
-
-
-def test_network_output_dimensions(network_class):
-    &quot;&quot;&quot;Five dummy golf shots should produce five pairs of predictions.&quot;&quot;&quot;
-    model = network_class(input_dim=15)
-    dummy_shots = torch.randn(5, 15)
-
-    model.eval()
-    with torch.no_grad():
-        predictions = model(dummy_shots)
-
-    assert predictions.shape == (5, 2)
-    assert torch.isfinite(predictions).all()
-
-
-def test_scaler_uses_training_data_only(script_tree):
-    &quot;&quot;&quot;Check the script's scaler calls and demonstrate their expected behaviour.&quot;&quot;&quot;
-    # Inspect actual source calls: fitting must use X_train, not X_val.
-    calls = [
-        node for node in ast.walk(script_tree)
-        if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
-        and isinstance(node.func.value, ast.Name)
-        and node.func.value.id == &quot;scaler&quot;
-    ]
-    fitting_calls = [
-        call for call in calls if call.func.attr in (&quot;fit&quot;, &quot;fit_transform&quot;)
-    ]
-    assert len(fitting_calls) == 1, &quot;Scaler should be fitted exactly once&quot;
-    assert len(fitting_calls[0].args) &gt;= 1
-    assert isinstance(fitting_calls[0].args[0], ast.Name)
-    assert fitting_calls[0].args[0].id == &quot;X_train&quot;
-
-    validation_transforms = [
-        call for call in calls
-        if call.func.attr == &quot;transform&quot;
-        and call.args and isinstance(call.args[0], ast.Name)
-        and call.args[0].id == &quot;X_val&quot;
-    ]
-    assert validation_transforms, &quot;Validation features must use scaler.transform&quot;
-
-    # Small synthetic example: validation data must not change training means.
-    train = np.array([[0.0, 10.0], [2.0, 20.0], [4.0, 30.0]])
-    validation = np.array([[100.0, 200.0]])
-    scaler = StandardScaler()
-    scaled_train = scaler.fit_transform(train)
-    training_means = scaler.mean_.copy()
-    scaled_validation = scaler.transform(validation)
-
-    np.testing.assert_allclose(scaler.mean_, training_means)
-    np.testing.assert_allclose(scaled_train.mean(axis=0), [0.0, 0.0], atol=1e-12)
-    assert np.isfinite(scaled_validation).all()
-
-
-def test_one_training_step_updates_weights(network_class):
-    &quot;&quot;&quot;A single optimisation step should compute a finite loss and change weights.&quot;&quot;&quot;
-    torch.manual_seed(42)  # Make the test repeatable.
-    model = network_class(input_dim=15)
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-    criterion = torch.nn.MSELoss()
-
-    # Synthetic inputs/targets keep the test fast and independent of CSV files.
-    inputs = torch.randn(8, 15)
-    targets = torch.randn(8, 2)
-    original_weights = [parameter.detach().clone() for parameter in model.parameters()]
-
-    model.train()
-    optimizer.zero_grad()
-    predictions = model(inputs)
-    loss = criterion(predictions, targets)
-    assert torch.isfinite(loss), &quot;Training loss must be finite&quot;
-
-    loss.backward()
-    optimizer.step()
-
-    assert any(
-        not torch.equal(before, after)
-        for before, after in zip(original_weights, model.parameters())
-    ), &quot;No network parameters changed during training&quot;
-
-
-if __name__ == &quot;__main__&quot;:
-    # Running this file directly (for example with !python in Colab) now
-    # launches pytest and prints the individual PASS/FAIL results to output.
-    # This block is skipped when pytest imports the file during test discovery.
-    import sys
-
-    print(&quot;\nRunning NN_Combined.py unit tests...\n&quot;, flush=True)
-    exit_code = pytest.main([str(Path(__file__).resolve()), &quot;-v&quot;, &quot;-s&quot;, &quot;--tb=short&quot;])
-    # Forward pytest's result code so a failing test is not reported as success.
-    sys.exit(int(exit_code))
-</code></pre></details></section>
-<section id="file3"><h2>Code files/linear_regression_side_total.py</h2><p class="description">Establish a linear-regression baseline for predicting golf-shot Side Total.
+# Part 2: Validation Data
+# Any remainder row goes into validation when the row count is odd.
+val_part = shuffled_df.iloc[chunk_size:]
+val_output_file = data_folder / &quot;Validation data.csv&quot;
+val_part.to_csv(val_output_file, index=False)
+print(f&quot;Validation data saved to: {val_output_file} ({len(val_part)} rows)&quot;)
+</code></pre></details></section><section id="module-2"><div class="eyebrow">MODULE 3 OF 5</div><h2>Code files/linear_regression_side_total.py</h2><p class="doc">Establish a linear-regression baseline for predicting golf-shot Side Total.
 
 The script selects a configurable number of input features using SelectKBest
 with f_regression, fits a linear regression model, reports MAE and R-squared
 for training and validation data, and plots actual versus predicted values.
 It expects the training and validation CSV files in the repository's data
 files directory; run Data_processing.py first.
-</p><h3>API reference</h3><article><span class="kind">Function</span> <code>run_side_total_regression_with_feature_selection(
+</p><h3>Classes and functions</h3><div class="api"><div><span class="pill">Function</span> <code>run_side_total_regression_with_feature_selection(
     df_train_path,
     df_test_path,
     feature_columns,
     k_features=5,
-)</code></article><details><summary>View complete Python source</summary><pre><code>&quot;&quot;&quot;Establish a linear-regression baseline for predicting golf-shot Side Total.
+)</code></div><p class="doc small">Fit and evaluate a feature-selected linear regression model for Side Total.
+
+    Args:
+        df_train_path (str or pathlib.Path): Path to the training CSV file.
+        df_test_path (str or pathlib.Path): Path to the validation/test CSV file.
+        feature_columns (list[str]): Explicit names of candidate predictor
+            columns. Target columns must not be included.
+        k_features (int): Number of candidate features to retain, ranked using
+            univariate linear-regression tests.
+
+    Returns:
+        tuple: Training MAE and R-squared, training actual and predicted values,
+        validation MAE and R-squared, validation actual and predicted values,
+        and the list of selected feature names.
+
+    Raises:
+        RuntimeError: If the training or validation CSV cannot be read.
+        ValueError: If required columns are missing or no usable numeric rows remain.
+    </p></div><details><summary>Show full source code</summary><pre><code>&quot;&quot;&quot;Establish a linear-regression baseline for predicting golf-shot Side Total.
 
 The script selects a configurable number of input features using SelectKBest
 with f_regression, fits a linear regression model, reports MAE and R-squared
@@ -702,90 +404,415 @@ if __name__ == &quot;__main__&quot;:
     plt.savefig(figure_path, dpi=150, bbox_inches=&quot;tight&quot;)
     print(f&quot;Saved graph: {figure_path}&quot;)
     plt.close()
-</code></pre></details></section>
-<section id="file4"><h2>Code files/Data_processing.py</h2><p class="description">Prepare TrackMan golf-shot data for regression and neural-network modelling.
+</code></pre></details></section><section id="module-3"><div class="eyebrow">MODULE 4 OF 5</div><h2>Code files/NN_Combined.py</h2><p class="doc">Train and evaluate a multi-output neural network for golf-shot outcomes.
 
-Reads the original CSV from the repository's data files directory, skips the
-measurement-units row, removes unused columns, keeps Driver shots, removes rows
-with missing values, and writes the cleaned dataset plus separate training
-and validation CSV files.
+Uses TrackMan-derived swing and ball-strike measurements to predict Side Total
+and Total. The script loads prepared training and validation CSV files,
+standardises input features using training data statistics, trains a PyTorch
+neural network, reports mean-squared-error losses, and plots actual versus
+predicted values with MAE and R-squared metrics.
 
-Run this script before either modelling script. Paths are resolved relative to
-this file, so the current working directory does not need to be the repository
-root.
-</p><h3>API reference</h3><p>Workflow script; no top-level classes or functions.</p><details><summary>View complete Python source</summary><pre><code>&quot;&quot;&quot;Prepare TrackMan golf-shot data for regression and neural-network modelling.
+Run Data_processing.py first. Dataset paths are resolved relative to this
+script, not the process's current working directory.
+</p><h3>Classes and functions</h3><div class="api"><div><span class="pill">Class</span> <code>GolfNeuralNet(nn.Module)</code></div><p class="doc small">Fully connected network predicting Side Total and Total.</p></div><div class="api"><div><span class="pill">Method</span> <code>__init__(self, input_dim)</code></div><p class="doc small">Initialise the network layers.
 
-Reads the original CSV from the repository's data files directory, skips the
-measurement-units row, removes unused columns, keeps Driver shots, removes rows
-with missing values, and writes the cleaned dataset plus separate training
-and validation CSV files.
+        Args:
+            input_dim (int): Number of input features supplied to the network.
+        </p></div><div class="api"><div><span class="pill">Method</span> <code>forward(self, x)</code></div><p class="doc small">Compute the two target predictions for a batch of input features.
 
-Run this script before either modelling script. Paths are resolved relative to
-this file, so the current working directory does not need to be the repository
-root.
+        Args:
+            x (torch.Tensor): Input tensor shaped (batch_size, input_dim).
+
+        Returns:
+            torch.Tensor: Predictions shaped (batch_size, 2), ordered as
+            Side Total then Total.
+        </p></div><div class="api"><div><span class="pill">Function</span> <code>main()</code></div><p class="doc small">Load datasets, train the combined model and plot evaluation results.
+
+    Called only when this script is run directly, so importing GolfNeuralNet
+    for documentation or testing does not trigger training or plotting.
+    </p></div><details><summary>Show full source code</summary><pre><code>&quot;&quot;&quot;Train and evaluate a multi-output neural network for golf-shot outcomes.
+
+Uses TrackMan-derived swing and ball-strike measurements to predict Side Total
+and Total. The script loads prepared training and validation CSV files,
+standardises input features using training data statistics, trains a PyTorch
+neural network, reports mean-squared-error losses, and plots actual versus
+predicted values with MAE and R-squared metrics.
+
+Run Data_processing.py first. Dataset paths are resolved relative to this
+script, not the process's current working directory.
 &quot;&quot;&quot;
 
-# pandas reads and writes the CSV datasets; pathlib builds portable file paths.
+import os
+import sys
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import mean_absolute_error, r2_score
 from pathlib import Path
 
-# Resolve paths from this script's location, not the current working directory.
-# This assumes the script is stored in the repository's &quot;Code files&quot; directory.
+# The network maps the 15 input measurements to two outputs: Side Total and Total.
+class GolfNeuralNet(nn.Module):
+    &quot;&quot;&quot;Fully connected network predicting Side Total and Total.&quot;&quot;&quot;
+
+    def __init__(self, input_dim):
+        &quot;&quot;&quot;Initialise the network layers.
+
+        Args:
+            input_dim (int): Number of input features supplied to the network.
+        &quot;&quot;&quot;
+        super(GolfNeuralNet, self).__init__()
+        # Hidden fully connected layers learn nonlinear combinations of input measurements.
+        self.fc1 = nn.Linear(input_dim, 500)
+        self.relu1 = nn.ReLU()
+        self.fc2 = nn.Linear(500, 500)
+        self.relu2 = nn.ReLU()
+        self.fc3 = nn.Linear(500, 2)  # Output layer predicting 2 values (Side Total, Total)
+
+    def forward(self, x):
+        &quot;&quot;&quot;Compute the two target predictions for a batch of input features.
+
+        Args:
+            x (torch.Tensor): Input tensor shaped (batch_size, input_dim).
+
+        Returns:
+            torch.Tensor: Predictions shaped (batch_size, 2), ordered as
+            Side Total then Total.
+        &quot;&quot;&quot;
+        out = self.fc1(x)
+        out = self.relu1(out)
+        out = self.fc2(out)
+        out = self.relu2(out)
+        out = self.fc3(out)
+        return out
+
+# Resolve data paths relative to this script so the current working directory
+# and absolute repository location do not need to be hard-coded.
 REPO_ROOT = Path(__file__).resolve().parent.parent
-data_folder = REPO_ROOT / &quot;data files&quot;
-input_file = data_folder / &quot;data.csv&quot;
-output_file = data_folder / &quot;cleaned_data.csv&quot;
+DATA_FOLDER = REPO_ROOT / &quot;data files&quot;
 
-# 1. Load the data, skipping the units row
-# The second CSV row contains units rather than observations, so it is skipped.
-df = pd.read_csv(input_file, skiprows=[1])
-print(f&quot;Rows initially loaded: {len(df)}&quot;)
-
-# 2. Remove columns not required for the model
-# These columns contain missing values and are excluded from the cleaned dataset.
-columns_to_drop = [
-    &quot;Ball&quot;,
-    &quot;Dynamic Lie&quot;,
-    &quot;Impact Offset&quot;,
-    &quot;Impact Height&quot;,
+# Explicit input and target names are shared by training and source-level tests.
+features = [
+    'Club Speed', 'Attack Angle', 'Club Path', 'Low Point', 'Swing Plane',
+    'Swing Direction', 'Dyn. Loft', 'Face Angle', 'Face To Path', 'Ball Speed',
+    'Smash Factor', 'Launch Angle', 'Launch Direction', 'Spin Rate', 'Spin Axis'
 ]
-# Drop only the specified columns; pandas raises an error if a listed column is absent.
-df = df.drop(columns=columns_to_drop)
-
-# 3. Keep only Driver shots
-df = df[df[&quot;Club&quot;] == &quot;Driver&quot;].copy()
-print(f&quot;Rows after filtering for Driver: {len(df)}&quot;)
-
-# 4. Remove rows containing any missing values
-# Keep only complete observations so later models receive numeric values for every field.
-df = df.dropna()
-print(f&quot;Rows after removing missing values: {len(df)}&quot;)
-
-# 5. Save the cleaned dataset
-df.to_csv(output_file, index=False)
-
-print(f&quot;Cleaned data saved to: {output_file}&quot;)
-print(f&quot;Final number of rows: {len(df)}&quot;)
-print(f&quot;Final number of columns: {len(df.columns)}&quot;)
+targets = ['Side Total', 'Total']
 
 
-# 6. Shuffle once with a fixed seed, then create training and validation datasets.
-# A fixed seed makes the split reproducible whenever the input data is unchanged.
-shuffled_df = df.sample(frac=1, random_state=42).reset_index(drop=True)
-num_parts = 2
-chunk_size = len(shuffled_df) // num_parts
+def main():
+    &quot;&quot;&quot;Load datasets, train the combined model and plot evaluation results.
 
-# Part 1: Training Data
-train_part = shuffled_df.iloc[0:chunk_size]
-train_output_file = data_folder / &quot;Training data.csv&quot;
-train_part.to_csv(train_output_file, index=False)
-print(f&quot;Training data saved to: {train_output_file} ({len(train_part)} rows)&quot;)
+    Called only when this script is run directly, so importing GolfNeuralNet
+    for documentation or testing does not trigger training or plotting.
+    &quot;&quot;&quot;
+    # Load the Training and Validation datasets.
+    train_file = DATA_FOLDER / &quot;Training data.csv&quot;
+    val_file = DATA_FOLDER / &quot;Validation data.csv&quot;
 
-# Part 2: Validation Data
-# Any remainder row goes into validation when the row count is odd.
-val_part = shuffled_df.iloc[chunk_size:]
-val_output_file = data_folder / &quot;Validation data.csv&quot;
-val_part.to_csv(val_output_file, index=False)
-print(f&quot;Validation data saved to: {val_output_file} ({len(val_part)} rows)&quot;)
-</code></pre></details></section></div></main>
-<footer>Generated from the GitHub repository source on 18 October 2026. This is a standalone HTML documentation alternative, not pdoc output; pdoc could not be installed in the current environment.</footer></body></html>
+    if not train_file.is_file():
+        raise FileNotFoundError(
+            f&quot;Training dataset not found: {train_file}. &quot;
+            &quot;Run Data_processing.py first.&quot;
+        )
+    if not val_file.is_file():
+        raise FileNotFoundError(
+            f&quot;Validation dataset not found: {val_file}. &quot;
+            &quot;Run Data_processing.py first.&quot;
+        )
+
+    train_df = pd.read_csv(train_file)
+    val_df = pd.read_csv(val_file)
+
+    # Split into features (X) and targets (y) using available, verified columns
+    X_train = train_df[features]
+    y_train = train_df[targets]
+    X_val = val_df[features]
+    y_val = val_df[targets]
+
+    # Normalize features
+    # Fit scaling parameters on training data only; reuse them unchanged for validation.
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_val_scaled = scaler.transform(X_val)
+
+    # Convert to PyTorch Tensors
+    X_train_tensor = torch.tensor(X_train_scaled, dtype=torch.float32)
+    y_train_tensor = torch.tensor(y_train.values, dtype=torch.float32)
+    X_val_tensor = torch.tensor(X_val_scaled, dtype=torch.float32)
+    y_val_tensor = torch.tensor(y_val.values, dtype=torch.float32)
+
+    # Instantiate Model, Loss Function, and Optimizer
+    model = GolfNeuralNet(len(features))
+    # MSE penalises squared differences between predicted and measured target values.
+    criterion = nn.MSELoss()
+    optimizer = optim.Adam(model.parameters(), lr=0.01)
+
+    # Train the Model
+    print(&quot;\nTraining Multi-Output Neural Network Model...&quot;)
+    epochs = 150
+    train_losses = []
+    val_losses = []
+
+    # One epoch is a complete optimisation pass over the training dataset.
+    for epoch in range(1, epochs + 1):
+        model.train()
+        optimizer.zero_grad()
+        outputs = model(X_train_tensor)
+        loss = criterion(outputs, y_train_tensor)
+        # Backpropagate the loss gradients, then update the model weights.
+        loss.backward()
+        optimizer.step()
+
+        # Validation data measures generalisation; it is not used for gradient updates.
+        # Evaluate on Validation set
+        model.eval()
+        with torch.no_grad():
+            val_outputs = model(X_val_tensor)
+            val_loss = criterion(val_outputs, y_val_tensor)
+
+        train_losses.append(loss.item())
+        val_losses.append(val_loss.item())
+
+        if epoch == 1 or epoch % 25 == 0:
+            print(f&quot;Epoch {epoch:03d}/{epochs} | Train Loss (MSE): {loss.item():.4f} | Val Loss (MSE): {val_loss.item():.4f}&quot;)
+
+    # Model evaluation
+    model.eval()
+    # Disable gradient tracking during final prediction to reduce overhead.
+    with torch.no_grad():
+        train_preds_np = model(X_train_tensor).numpy()
+        val_preds_np = model(X_val_tensor).numpy()
+
+    # Plot actual vs predicted values side-by-side
+    for idx, target_name in enumerate(targets):
+        plt.figure(figsize=(12, 5))
+
+        # Compare predictions with known targets; the dashed diagonal indicates perfect predictions.
+        # Train plot
+        plt.subplot(1, 2, 1)
+        tr_true = y_train.values[:, idx]
+        tr_pred = train_preds_np[:, idx]
+        mae_tr = mean_absolute_error(tr_true, tr_pred)
+        r2_tr = r2_score(tr_true, tr_pred)
+        plt.scatter(tr_true, tr_pred, alpha=0.3, color='blue')
+        plt.plot([tr_true.min(), tr_true.max()], [tr_true.min(), tr_true.max()], 'r--', lw=2)
+        plt.title(f'Train: Actual vs Pred ({target_name})\nMAE: {mae_tr:.2f}, R²: {r2_tr:.4f}')
+        plt.xlabel('Actual')
+        plt.ylabel('Predicted')
+
+        # Val plot
+        plt.subplot(1, 2, 2)
+        v_true = y_val.values[:, idx]
+        v_pred = val_preds_np[:, idx]
+        mae_val = mean_absolute_error(v_true, v_pred)
+        r2_val = r2_score(v_true, v_pred)
+        plt.scatter(v_true, v_pred, alpha=0.3, color='green')
+        plt.plot([v_true.min(), v_true.max()], [v_true.min(), v_true.max()], 'r--', lw=2)
+        plt.title(f'Val: Actual vs Pred ({target_name})\nMAE: {mae_val:.2f}, R²: {r2_val:.4f}')
+        plt.xlabel('Actual')
+        plt.ylabel('Predicted')
+
+        plt.tight_layout()
+        output_dir = REPO_ROOT / &quot;model outputs&quot;
+        output_dir.mkdir(parents=True, exist_ok=True)
+        figure_path = output_dir / f&quot;nn_combined_{target_name.lower().replace(' ', '_')}.png&quot;
+        plt.savefig(figure_path, dpi=150, bbox_inches=&quot;tight&quot;)
+        print(f&quot;Saved graph: {figure_path}&quot;)
+        plt.close()
+
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre></details></section><section id="module-4"><div class="eyebrow">MODULE 5 OF 5</div><h2>Code files/Test_NN_Combined.py</h2><p class="doc">Unit tests for the combined golf-shot neural network.
+
+These tests check four important behaviours:
+1. The target columns are not used as input features (preventing data leakage).
+2. The network produces two predictions per shot.
+3. The scaler learns statistics only from training data.
+4. One training step updates network weights and produces a finite loss.
+
+The NN_Combined.py script trains for 150 epochs and displays plots when run.
+To avoid doing that during testing, this file reads its Python syntax tree and
+loads only the GolfNeuralNet class, without executing the training script.
+
+Run directly from a Colab notebook:
+    !python &quot;Code files/Test_NN_Combined.py&quot;
+
+Or run with pytest from the repository root:
+    python -m pytest &quot;Code files/Test_NN_Combined.py&quot; -v
+
+Requires: pytest, torch, numpy, scikit-learn.
+</p><h3>Classes and functions</h3><div class="api"><div><span class="pill">Function</span> <code>script_tree()</code></div><p class="doc small">Parse the source without running its training or plotting code.</p></div><div class="api"><div><span class="pill">Function</span> <code>assigned_value(tree, variable_name)</code></div><p class="doc small">Return a literal list assigned to a top-level variable in the script.</p></div><div class="api"><div><span class="pill">Function</span> <code>network_class(script_tree)</code></div><p class="doc small">Load only GolfNeuralNet, avoiding the script's top-level training loop.</p></div><div class="api"><div><span class="pill">Function</span> <code>test_features_exclude_targets(script_tree)</code></div><p class="doc small">The measured outcomes must never be passed to the network as inputs.</p></div><div class="api"><div><span class="pill">Function</span> <code>test_network_output_dimensions(network_class)</code></div><p class="doc small">Five dummy golf shots should produce five pairs of predictions.</p></div><div class="api"><div><span class="pill">Function</span> <code>test_scaler_uses_training_data_only(script_tree)</code></div><p class="doc small">Check the script's scaler calls and demonstrate their expected behaviour.</p></div><div class="api"><div><span class="pill">Function</span> <code>test_one_training_step_updates_weights(network_class)</code></div><p class="doc small">A single optimisation step should compute a finite loss and change weights.</p></div><details><summary>Show full source code</summary><pre><code>&quot;&quot;&quot;Unit tests for the combined golf-shot neural network.
+
+These tests check four important behaviours:
+1. The target columns are not used as input features (preventing data leakage).
+2. The network produces two predictions per shot.
+3. The scaler learns statistics only from training data.
+4. One training step updates network weights and produces a finite loss.
+
+The NN_Combined.py script trains for 150 epochs and displays plots when run.
+To avoid doing that during testing, this file reads its Python syntax tree and
+loads only the GolfNeuralNet class, without executing the training script.
+
+Run directly from a Colab notebook:
+    !python &quot;Code files/Test_NN_Combined.py&quot;
+
+Or run with pytest from the repository root:
+    python -m pytest &quot;Code files/Test_NN_Combined.py&quot; -v
+
+Requires: pytest, torch, numpy, scikit-learn.
+&quot;&quot;&quot;
+
+import ast
+from pathlib import Path
+
+import numpy as np
+import pytest
+import torch
+from sklearn.preprocessing import StandardScaler
+
+
+# Locate the real script regardless of the directory pytest was started from.
+SCRIPT_PATH = Path(__file__).resolve().with_name(&quot;NN_Combined.py&quot;)
+
+
+@pytest.fixture(scope=&quot;module&quot;)
+def script_tree():
+    &quot;&quot;&quot;Parse the source without running its training or plotting code.&quot;&quot;&quot;
+    return ast.parse(SCRIPT_PATH.read_text(encoding=&quot;utf-8&quot;), filename=str(SCRIPT_PATH))
+
+
+def assigned_value(tree, variable_name):
+    &quot;&quot;&quot;Return a literal list assigned to a top-level variable in the script.&quot;&quot;&quot;
+    for node in tree.body:
+        if isinstance(node, ast.Assign):
+            if any(
+                isinstance(target, ast.Name) and target.id == variable_name
+                for target in node.targets
+            ):
+                return ast.literal_eval(node.value)
+    pytest.fail(f&quot;Could not find a simple assignment for {variable_name!r}&quot;)
+
+
+@pytest.fixture(scope=&quot;module&quot;)
+def network_class(script_tree):
+    &quot;&quot;&quot;Load only GolfNeuralNet, avoiding the script's top-level training loop.&quot;&quot;&quot;
+    class_node = next(
+        (node for node in script_tree.body
+         if isinstance(node, ast.ClassDef) and node.name == &quot;GolfNeuralNet&quot;),
+        None,
+    )
+    assert class_node is not None, &quot;GolfNeuralNet class is missing&quot;
+    # Compile the class definition in isolation; nn must exist in its namespace.
+    namespace = {&quot;nn&quot;: torch.nn}
+    isolated_module = ast.fix_missing_locations(
+        ast.Module(body=[class_node], type_ignores=[])
+    )
+    exec(compile(isolated_module, str(SCRIPT_PATH), &quot;exec&quot;), namespace)
+    return namespace[&quot;GolfNeuralNet&quot;]
+
+
+def test_features_exclude_targets(script_tree):
+    &quot;&quot;&quot;The measured outcomes must never be passed to the network as inputs.&quot;&quot;&quot;
+    features = assigned_value(script_tree, &quot;features&quot;)
+    targets = assigned_value(script_tree, &quot;targets&quot;)
+
+    assert targets == [&quot;Side Total&quot;, &quot;Total&quot;]
+    assert len(features) == 15
+    assert len(features) == len(set(features)), &quot;Input features contain duplicates&quot;
+    assert not set(features).intersection(targets), &quot;Target leakage into input features&quot;
+
+
+def test_network_output_dimensions(network_class):
+    &quot;&quot;&quot;Five dummy golf shots should produce five pairs of predictions.&quot;&quot;&quot;
+    model = network_class(input_dim=15)
+    dummy_shots = torch.randn(5, 15)
+
+    model.eval()
+    with torch.no_grad():
+        predictions = model(dummy_shots)
+
+    assert predictions.shape == (5, 2)
+    assert torch.isfinite(predictions).all()
+
+
+def test_scaler_uses_training_data_only(script_tree):
+    &quot;&quot;&quot;Check the script's scaler calls and demonstrate their expected behaviour.&quot;&quot;&quot;
+    # Inspect actual source calls: fitting must use X_train, not X_val.
+    calls = [
+        node for node in ast.walk(script_tree)
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)
+        and isinstance(node.func.value, ast.Name)
+        and node.func.value.id == &quot;scaler&quot;
+    ]
+    fitting_calls = [
+        call for call in calls if call.func.attr in (&quot;fit&quot;, &quot;fit_transform&quot;)
+    ]
+    assert len(fitting_calls) == 1, &quot;Scaler should be fitted exactly once&quot;
+    assert len(fitting_calls[0].args) &gt;= 1
+    assert isinstance(fitting_calls[0].args[0], ast.Name)
+    assert fitting_calls[0].args[0].id == &quot;X_train&quot;
+
+    validation_transforms = [
+        call for call in calls
+        if call.func.attr == &quot;transform&quot;
+        and call.args and isinstance(call.args[0], ast.Name)
+        and call.args[0].id == &quot;X_val&quot;
+    ]
+    assert validation_transforms, &quot;Validation features must use scaler.transform&quot;
+
+    # Small synthetic example: validation data must not change training means.
+    train = np.array([[0.0, 10.0], [2.0, 20.0], [4.0, 30.0]])
+    validation = np.array([[100.0, 200.0]])
+    scaler = StandardScaler()
+    scaled_train = scaler.fit_transform(train)
+    training_means = scaler.mean_.copy()
+    scaled_validation = scaler.transform(validation)
+
+    np.testing.assert_allclose(scaler.mean_, training_means)
+    np.testing.assert_allclose(scaled_train.mean(axis=0), [0.0, 0.0], atol=1e-12)
+    assert np.isfinite(scaled_validation).all()
+
+
+def test_one_training_step_updates_weights(network_class):
+    &quot;&quot;&quot;A single optimisation step should compute a finite loss and change weights.&quot;&quot;&quot;
+    torch.manual_seed(42)  # Make the test repeatable.
+    model = network_class(input_dim=15)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    criterion = torch.nn.MSELoss()
+
+    # Synthetic inputs/targets keep the test fast and independent of CSV files.
+    inputs = torch.randn(8, 15)
+    targets = torch.randn(8, 2)
+    original_weights = [parameter.detach().clone() for parameter in model.parameters()]
+
+    model.train()
+    optimizer.zero_grad()
+    predictions = model(inputs)
+    loss = criterion(predictions, targets)
+    assert torch.isfinite(loss), &quot;Training loss must be finite&quot;
+
+    loss.backward()
+    optimizer.step()
+
+    assert any(
+        not torch.equal(before, after)
+        for before, after in zip(original_weights, model.parameters())
+    ), &quot;No network parameters changed during training&quot;
+
+
+if __name__ == &quot;__main__&quot;:
+    # Running this file directly (for example with !python in Colab) now
+    # launches pytest and prints the individual PASS/FAIL results to output.
+    # This block is skipped when pytest imports the file during test discovery.
+    import sys
+
+    print(&quot;\nRunning NN_Combined.py unit tests...\n&quot;, flush=True)
+    exit_code = pytest.main([str(Path(__file__).resolve()), &quot;-v&quot;, &quot;-s&quot;, &quot;--tb=short&quot;])
+    # Forward pytest's result code so a failing test is not reported as success.
+    sys.exit(int(exit_code))
+</code></pre></details></section></main></div><footer>Generated from the latest GitHub files. Standalone HTML documentation; not generated by pdoc. Open this file in a browser for full navigation and expandable code.</footer></body></html>
