@@ -1,8 +1,10 @@
 import pandas as pd
 from pathlib import Path
 
-# Define file paths relative to the repository root
-data_folder = Path("data files")
+# Resolve paths from this script's location, not the current working directory.
+# This assumes the script is stored in the repository's "Code files" directory.
+REPO_ROOT = Path(__file__).resolve().parent.parent
+data_folder = REPO_ROOT / "data files"
 input_file = data_folder / "data.csv"
 output_file = data_folder / "cleaned_data.csv"
 
