@@ -13,6 +13,7 @@ images from the separate Python process. PNGs are still saved to model outputs.
 from pathlib import Path
 import subprocess
 import sys
+import time
 
 
 ROOT = Path(__file__).resolve().parent
@@ -29,14 +30,21 @@ GRAPH_FILES = (
 
 
 def run_script(filename):
-    """Execute one project script and stream its printed output and errors."""
+    """Execute a project script, stream its output, and return elapsed seconds."""
     script = CODE_FOLDER / filename
     if not script.is_file():
         raise FileNotFoundError(f"Cannot find project script: {script}")
 
     print(f"\n=== Running {filename} ===", flush=True)
     # No output capture: results and errors appear directly in Colab.
-    subprocess.run([sys.executable, "-u", str(script)], cwd=ROOT, check=True)
+    # perf_counter measures elapsed (wall-clock) time, including startup and I/O.
+    start = time.perf_counter()
+    try:
+        subprocess.run([sys.executable, "-u", str(script)], cwd=ROOT, check=True)
+    finally:
+        elapsed = time.perf_counter() - start
+        print(f"Runtime for {filename}: {elapsed:.2f} seconds", flush=True)
+    return elapsed
 
 
 def show_graphs():
@@ -71,10 +79,23 @@ def main():
     for filename in GRAPH_FILES:
         (OUTPUT_FOLDER / filename).unlink(missing_ok=True)
 
-    run_script("Data_processing.py")
-    run_script("linear_regression_side_total.py")
-    run_script("NN_Combined.py")
-    show_graphs()
+    # Store the elapsed time of each completed script for the final summary.
+    runtimes = {}
+    workflow_start = time.perf_counter()
+    try:
+        for filename in (
+            "Data_processing.py",
+            "linear_regression_side_total.py",
+            "NN_Combined.py",
+        ):
+            runtimes[filename] = run_script(filename)
+        show_graphs()
+    finally:
+        # Report completed scripts even if a later step fails.
+        print("\n=== Runtime summary ===", flush=True)
+        for filename, elapsed in runtimes.items():
+            print(f"{filename}: {elapsed:.2f} seconds ({elapsed / 60:.2f} minutes)", flush=True)
+        print(f"Total workflow time: {time.perf_counter() - workflow_start:.2f} seconds", flush=True)
 
 
 if __name__ == "__main__":
